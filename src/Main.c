@@ -140,7 +140,7 @@ int main(int argc,char** argv){
     //Variable c = Variable_RefData("c","str",(CStr[]){ sname },sizeof(CStr),0,NULL,NULL);
     //Variable d = Variable_Make("d","human",(Human[]){ Human_New("John",1,2) },sizeof(Human),0,Human_Destroyer,Human_Cpyer);
     
-    LuaLike_Print(&ll);
+    //LuaLike_Print(&ll);
 
     Variable ret = LuaLike_Function(&ll,"main",(Variable[]){ 
         VARIABLE_END
