@@ -126,7 +126,7 @@ Token Float_Float_Handler_Equ(Scope* s,Token* op,Vector* args){
     Boolean res = n1 == n2;
 
     char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_LUALIKE_BOOLEAN,resstr);
+    return Token_Move(TOKEN_BOOL,resstr);
 }
 Token Float_Float_Handler_Les(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -139,7 +139,7 @@ Token Float_Float_Handler_Les(Scope* s,Token* op,Vector* args){
     Boolean res = n1 < n2;
 
     char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_LUALIKE_BOOLEAN,resstr);
+    return Token_Move(TOKEN_BOOL,resstr);
 }
 Token Float_Float_Handler_Grt(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -152,7 +152,7 @@ Token Float_Float_Handler_Grt(Scope* s,Token* op,Vector* args){
     Boolean res = n1 > n2;
 
     char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_LUALIKE_BOOLEAN,resstr);
+    return Token_Move(TOKEN_BOOL,resstr);
 }
 Token Float_Float_Handler_Leq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -165,7 +165,7 @@ Token Float_Float_Handler_Leq(Scope* s,Token* op,Vector* args){
     Boolean res = n1 <= n2;
 
     char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_LUALIKE_BOOLEAN,resstr);
+    return Token_Move(TOKEN_BOOL,resstr);
 }
 Token Float_Float_Handler_Grq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -178,7 +178,7 @@ Token Float_Float_Handler_Grq(Scope* s,Token* op,Vector* args){
     Boolean res = n1 >= n2;
 
     char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_LUALIKE_BOOLEAN,resstr);
+    return Token_Move(TOKEN_BOOL,resstr);
 }
 Token Float_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);

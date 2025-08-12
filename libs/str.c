@@ -82,7 +82,7 @@ Token Str_Str_Handler_Equ(Scope* s,Token* op,Vector* args){
     Boolean res = CStr_Cmp(n1,n2);
 
     char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_LUALIKE_BOOLEAN,resstr);
+    return Token_Move(TOKEN_BOOL,resstr);
 }
 Token Str_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);

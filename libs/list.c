@@ -27,7 +27,7 @@ Boolean Implementation_BooleanOf(Scope* s,Token* a){
         }else{
             printf("[Int_Boolean]: 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
-    }else if(a->tt==TOKEN_LUALIKE_BOOLEAN){
+    }else if(a->tt==TOKEN_BOOL){
         n = Boolean_Parse(a->str);
     }
     return n;
