@@ -1,9 +1,6 @@
-
 function fib(a)
     if a <= 1
-        if a >= 0
-            return a
-        end
+        return a
     end
     return fib(a - 1) + fib(a - 2)
 end
@@ -14,7 +11,6 @@ end
 
 function main()
     --return fib(7)
-    --return fib(3)
-    --return add(1,2) + add(3,4) + add(5,6)
-    return add(add(add(1,2),add(3,4)),add(add(5,6),add(7,8)))
+    b = add(add(add(1,2),add(3,4)),add(add(5,6),add(7,8)))
+    return b
 end

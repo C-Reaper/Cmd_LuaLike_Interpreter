@@ -3,8 +3,6 @@
 #include "/home/codeleaded/System/Static/Library/LuaLikeDefines.h"
 
 Variable io_input(Scope* sc,CStr name,Variable* args){
-    Variable* a = &args[0];
-    
     char buffer[1024];
     char* back = fgets(buffer,1024,stdin);
     Variable ret = Variable_Make(
