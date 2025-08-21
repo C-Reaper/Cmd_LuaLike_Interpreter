@@ -1,16 +1,27 @@
-function fib(a)
-    if a <= 1
-        return a
-    end
-    return fib(a - 1) + fib(a - 2)
-end
-
-function add(a,b)
-    return a + b
-end
+from io import *
+from sys import *
+--from window import *
 
 function main()
-    --return fib(7)
-    b = add(add(add(1,2),add(3,4)),add(add(5,6),add(7,8)))
-    return b
+    --w = window::new("Hello World",1000,1000)
+    --w.init()
+    --while true
+    --    w.update()
+    --    w.render()
+    --    sys::msleep(2000)
+    --end
+
+    a = 0
+    b = 1
+
+    if a == b
+        io::print("Equal\n")
+    elif a > b
+        io::print("Greater\n")
+    else
+        io::print("Less\n")
+    end
+
+    sys::msleep(1000)
+    return 0
 end

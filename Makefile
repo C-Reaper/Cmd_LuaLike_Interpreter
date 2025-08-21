@@ -30,6 +30,9 @@ lib: $(SO_FILES)
 $(BIN_DIR)/%.so: $(LIB_DIR)/%.c
 	$(CC) $(CFLAGS) -fPIC -o $@ $< -shared $(LDFLAGS)
 
+win:
+	$(CC) $(CFLAGS) -fPIC -o ./$(BIN_DIR)/window.so ./$(LIB_DIR)/window.c -shared $(LDFLAGS) -lX11 -lpng
+
 cleanlib:
 	rm -rf $(BIN_DIR)/*
 

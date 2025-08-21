@@ -84,12 +84,12 @@ end
 
 include "Script.ll"
 
-from obj import object
 from list import listmake
+from obj import *
 
 class Human
     function new(name,age)
-        m = object()
+        m = obj::new("Human")
         m.name = name
         m.age = age
         return m
@@ -97,9 +97,9 @@ class Human
     
     function hello(self)
         if self.name=="Bro"
-            return "Bro "+self.name+" is chillin...."
+            return "Bro " + self.name + " is chillin...."
         end
-        return "hello from: "+self.name
+        return "hello from: " + self.name
     end
 end
 
@@ -111,7 +111,7 @@ end
 
 function main(a,b)
     --h = Human::new("Bro",18)
-    --g = h.Human::hello()
+    --g = h.hello()
     --return g
 
     l = listmake()
@@ -121,4 +121,22 @@ function main(a,b)
 
     --l -= 0
     return l
+end
+
+function fib(a)
+    if a <= 1
+        return a
+    end
+    return fib(a - 1) + fib(a - 2)
+end
+
+function add(a,b)
+    return a + b
+end
+
+function main()
+    return fib(7)
+    b = add(add(add(1,2),add(3,4)),add(add(5,6),add(7,8)))
+    return b
+    return add(add(add(1,2),add(3,4)),add(add(5,6),add(7,8)))
 end

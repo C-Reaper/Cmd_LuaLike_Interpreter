@@ -1,5 +1,6 @@
 #include "/home/codeleaded/System/Static/Library/AlxCallStack.h"
 #include "/home/codeleaded/System/Static/Library/AlxExternFunctions.h"
+#include "/home/codeleaded/System/Static/Library/AlxInterpreter.h"
 #include "/home/codeleaded/System/Static/Library/LuaLikeDefines.h"
 
 typedef VariableMap Object;// Vector<Variable>
@@ -60,8 +61,8 @@ Token Obj_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
-            if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"obj")){
-                printf("[Obj_Acs]: 1. Arg: %s is not a obj type!\n",a->str);
+            if(!Variable_Data(a_var)){
+                printf("[Obj_Acs]: 1. Arg: %s is not a init obj type!\n",a->str);
                 return Token_Null();
             }else{
                 VariableMap* members = Variable_Data(a_var);
@@ -157,13 +158,24 @@ Token Obj_Handler_Destroy(Scope* s,Token* op,Vector* args){
 }
 
 Variable Obj_new(Scope* sc,CStr name,Variable* args){
-    Variable ret = Variable_Make(
-        "OBJECT","obj",(VariableMap[]){ VariableMap_New() },
-        sizeof(VariableMap),sc->range-1,
-        Scope_DestroyerOfType(sc,"obj"),
-        Scope_CpyerOfType(sc,"obj")
-    );
-    return ret;
+    Variable* a = &args[0];
+    CStr objtype = *(CStr*)a->data;
+    
+    Type* t = TypeMap_Find(&sc->types,objtype);
+    if(t){
+        Variable ret = Variable_Make(
+            ".OBJECT",objtype,
+            (VariableMap[]){ VariableMap_New() },
+            sizeof(VariableMap),
+            sc->range-1,
+            Scope_DestroyerOfType(sc,objtype),
+            Scope_CpyerOfType(sc,objtype)
+        );
+        return ret;
+    }else{
+        Interpreter_ErrorHandler((Enviroment*)sc,"obj::new expected a valid type name!");
+        return Variable_Null();
+    }
 }
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>
@@ -188,8 +200,9 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
     );
 
     ExternFunctionMap_PushContained_C(Extern_Functions,funcs,(ExternFunction[]){
-        ExternFunction_New("new",NULL,(Member[]){ 
-            MEMBER_END 
+        ExternFunction_New("new",NULL,(Member[]){
+            Member_New("str","type"),
+            MEMBER_END
         },(void*)Obj_new),
         ExternFunction_Null()
     });

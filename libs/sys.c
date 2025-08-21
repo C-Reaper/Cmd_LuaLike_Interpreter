@@ -3,21 +3,21 @@
 #include "/home/codeleaded/System/Static/Library/LuaLikeDefines.h"
 #include "/home/codeleaded/System/Static/Library/Thread.h"
 
-Variable math_msleep(Scope* sc,CStr name,Variable* args){
+Variable sys_msleep(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     
     Number duration = *(Number*)a->data;
     Thread_Sleep_M(duration);
     return Variable_Null();
 }
-Variable math_usleep(Scope* sc,CStr name,Variable* args){
+Variable sys_usleep(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     
     Number duration = *(Number*)a->data;
     Thread_Sleep_U(duration);
     return Variable_Null();
 }
-Variable math_nsleep(Scope* sc,CStr name,Variable* args){
+Variable sys_nsleep(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     
     Number duration = *(Number*)a->data;
@@ -30,15 +30,15 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
         ExternFunction_New("msleep",NULL,(Member[]){ 
             Member_New("int","a"),
             MEMBER_END
-        },(void*)math_msleep),
+        },(void*)sys_msleep),
         ExternFunction_New("usleep",NULL,(Member[]){ 
             Member_New("int","a"),
             MEMBER_END
-        },(void*)math_usleep),
+        },(void*)sys_usleep),
         ExternFunction_New("nsleep",NULL,(Member[]){ 
             Member_New("int","a"),
             MEMBER_END
-        },(void*)math_nsleep),
+        },(void*)sys_nsleep),
         ExternFunction_Null()
     });
 }
