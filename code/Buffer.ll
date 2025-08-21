@@ -123,6 +123,10 @@ function main(a,b)
     return l
 end
 
+
+from io import *
+from sys import *
+
 function fib(a)
     if a <= 1
         return a
@@ -135,8 +139,27 @@ function add(a,b)
 end
 
 function main()
+    -- a = 2
+    -- b = 1
+
+    -- if a == b
+    --     io::print("Equal\n")
+    -- elif a == b + 1
+    --     io::print("a == b + 1\n")
+    -- elif a == b + 2
+    --     io::print("a == b + 2\n")
+    -- elif a == b + 3
+    --     io::print("a == b + 3\n")
+    -- elif a > b
+    --     io::print("Greater\n")
+    -- else
+    --     io::print("Less\n")
+    -- end
+    --sys::msleep(1000)
+
     return fib(7)
     b = add(add(add(1,2),add(3,4)),add(add(5,6),add(7,8)))
     return b
     return add(add(add(1,2),add(3,4)),add(add(5,6),add(7,8)))
 end
+

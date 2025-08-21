@@ -21,12 +21,12 @@ CStr Implementation_StrOf(Scope* s,Token* a){
 }
 
 void Str_Destroyer(Variable* v){
-    printf("Str: Destroyer!\n");
+    //printf("Str: Destroyer!\n");
     CStr* str = (CStr*)Variable_Data(v);
     CStr_Free(str);
 }
 void Str_Cpyer(Variable* src,Variable* dst){
-    printf("Str: Cpyer!\n");
+    //printf("Str: Cpyer!\n");
     CStr* src_str = (CStr*)Variable_Data(src);
     CStr* dst_str = (CStr*)Variable_Data(dst);
     *dst_str = CStr_Cpy(*src_str);
@@ -36,7 +36,7 @@ Token Str_Str_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("ASS: %s = %s\n",a->str,b->str);
+    //printf("ASS: %s = %s\n",a->str,b->str);
 
     CStr n2 = Implementation_StrOf(s,b);
     
@@ -58,7 +58,7 @@ Token Str_Str_Handler_Add(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("ADD: %s + %s\n",a->str,b->str);
+    //printf("ADD: %s + %s\n",a->str,b->str);
 
     CStr n1 = Implementation_StrOf(s,a);
     CStr n2 = Implementation_StrOf(s,b);
@@ -75,7 +75,7 @@ Token Str_Str_Handler_Equ(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("EQU: %s == %s\n",a->str,b->str);
+    //printf("EQU: %s == %s\n",a->str,b->str);
 
     CStr n1 = Implementation_StrOf(s,a);
     CStr n2 = Implementation_StrOf(s,b);
@@ -98,7 +98,7 @@ Token Str_Handler_Cast(Scope* s,Token* op,Vector* args){
 Token Str_Handler_Destroy(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
-    printf("DESTROY: %s\n",a->str);
+    //printf("DESTROY: %s\n",a->str);
 
     Variable* a_var = Scope_FindVariable(s,a->str);
     if(a_var){

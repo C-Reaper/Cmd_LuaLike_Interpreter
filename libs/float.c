@@ -25,7 +25,7 @@ Token Float_Float_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("ASS: %s = %s\n",a->str,b->str);
+    //printf("ASS: %s = %s\n",a->str,b->str);
 
     Double n2 = Implementation_FloatOf(s,b);
     
@@ -51,7 +51,7 @@ Token Float_Float_Handler_Add(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("ADD: %s + %s\n",a->str,b->str);
+    //printf("ADD: %s + %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
@@ -64,7 +64,7 @@ Token Float_Float_Handler_Sub(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("SUB: %s - %s\n",a->str,b->str);
+    //printf("SUB: %s - %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
@@ -77,7 +77,7 @@ Token Float_Float_Handler_Mul(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("MUL: %s * %s\n",a->str,b->str);
+    //printf("MUL: %s * %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
@@ -90,7 +90,7 @@ Token Float_Float_Handler_Div(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("DIV: %s / %s\n",a->str,b->str);
+    //printf("DIV: %s / %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
@@ -107,7 +107,7 @@ Token Float_Float_Handler_Div(Scope* s,Token* op,Vector* args){
 Token Float_Float_Handler_Neg(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
-    printf("NEG: -%s\n",a->str);
+    //printf("NEG: -%s\n",a->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double res = -n1;
@@ -119,7 +119,7 @@ Token Float_Float_Handler_Equ(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("EQU: %s == %s\n",a->str,b->str);
+    //printf("EQU: %s == %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
@@ -132,7 +132,7 @@ Token Float_Float_Handler_Les(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("LES: %s < %s\n",a->str,b->str);
+    //printf("LES: %s < %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
@@ -145,7 +145,7 @@ Token Float_Float_Handler_Grt(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("GRT: %s > %s\n",a->str,b->str);
+    //printf("GRT: %s > %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
@@ -158,7 +158,7 @@ Token Float_Float_Handler_Leq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("LEQ: %s <= %s\n",a->str,b->str);
+    //printf("LEQ: %s <= %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
@@ -171,7 +171,7 @@ Token Float_Float_Handler_Grq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("GRQ: %s >= %s\n",a->str,b->str);
+    //printf("GRQ: %s >= %s\n",a->str,b->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);

@@ -14,6 +14,8 @@ Boolean Implementation_BooleanOf(Scope* s,Token* a){
         }
     }else if(a->tt==TOKEN_BOOL){
         n = Boolean_Parse(a->str);
+    }else if(a->tt == TOKEN_NUMBER){
+        n = Number_Parse(a->str) != 0;
     }else{
         printf("[Int_Boolean]: 1. Arg: %s is not a int type!\n",a->str);
     }
@@ -24,7 +26,7 @@ Token Boolean_Boolean_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("ASS: %s = %s\n",a->str,b->str);
+    //printf("ASS: %s = %s\n",a->str,b->str);
 
     Boolean n2;
     
@@ -62,7 +64,7 @@ Token Boolean_Boolean_Handler_Equ(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("EQU: %s == %s\n",a->str,b->str);
+    //printf("EQU: %s == %s\n",a->str,b->str);
 
     Boolean n1 = Implementation_BooleanOf(s,a);
     Boolean n2 = Implementation_BooleanOf(s,b);

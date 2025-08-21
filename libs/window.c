@@ -11,7 +11,7 @@
 typedef SharedPointer WindowPtr;
 
 void Window_Destroyer(Variable* v){
-    printf("Window: Destroyer -> %s!\n",v->name);
+    //printf("Window: Destroyer -> %s!\n",v->name);
     
     SharedPointer* ptr = (SharedPointer*)v->data;
     char ret = SharedPointer_Free(ptr);
@@ -19,13 +19,30 @@ void Window_Destroyer(Variable* v){
     //else    printf("SMALL KILL\n");
 }
 void Window_Cpyer(Variable* src,Variable* dst){
-    printf("Window: Cpyer!\n");
+    //printf("Window: Cpyer!\n");
     
     SharedPointer* ptr1 = (SharedPointer*)src->data;
     SharedPointer* ptr2 = (SharedPointer*)dst->data;
     *ptr2 = SharedPointer_Share(ptr1);
 }
 
+#define WINDOW_TESTKEY(key,test) if(CStr_Cmp(key,#test)) keystates = alxw->Strokes[ALX_KEY_##test];
+
+Boolean Window_GetKey(AlxWindow* alxw,CStr key,CStr action){
+    States keystates;
+    WINDOW_TESTKEY(key,W)
+    WINDOW_TESTKEY(key,S)
+    WINDOW_TESTKEY(key,A)
+    WINDOW_TESTKEY(key,D)
+
+    Boolean state = 0;
+    if(CStr_Cmp(action,"pressed"))  state = keystates.PRESSED;
+    if(CStr_Cmp(action,"released")) state = keystates.RELEASED;
+    if(CStr_Cmp(action,"down"))     state = keystates.DOWN;
+    if(CStr_Cmp(action,"repeat"))   state = keystates.REPEAT;
+
+    return state;
+}
 CStr Window_BuildAcs(Scope* s,WindowPtr* wptr,CStr type,void* data,CStr name,CStr field){
     if(CStr_Cmp(name,field)){
         CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
@@ -35,7 +52,7 @@ CStr Window_BuildAcs(Scope* s,WindowPtr* wptr,CStr type,void* data,CStr name,CSt
     return NULL;
 }
 
-#define RETURNIF(s,wptr,ret,type,data,name,field)\
+#define WINDOW_RETURNIF(s,wptr,ret,type,data,name,field)\
 ret = Window_BuildAcs(s,wptr,type,data,name,field);\
 if(ret) return Token_Move(TOKEN_STRING,ret);
 
@@ -43,7 +60,7 @@ Token Window_Window_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("ASS: %s = %s\n",a->str,b->str);
+    //printf("ASS: %s = %s\n",a->str,b->str);
 
     Variable* b_var;
     if(b->tt==TOKEN_STRING){
@@ -78,7 +95,7 @@ Token Window_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("[Window]: Acs -> %s.%s\n",a->str,b->str);
+    //printf("[Window]: Acs -> %s.%s\n",a->str,b->str);
     
     CStr name = NULL;
     if(a->tt==TOKEN_STRING){
@@ -92,10 +109,10 @@ Token Window_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
                 AlxWindow* alxw = (AlxWindow*)wptr->Memory;
 
                 CStr name = NULL;
-                RETURNIF(s,wptr,name,"str",&alxw->Name,b->str,"name")
-                RETURNIF(s,wptr,name,"small",&alxw->Width,b->str,"width")
-                RETURNIF(s,wptr,name,"small",&alxw->Height,b->str,"height")
-                RETURNIF(s,wptr,name,"small",&alxw->Running,b->str,"running")
+                WINDOW_RETURNIF(s,wptr,name,"str",&alxw->Name,b->str,"name")
+                WINDOW_RETURNIF(s,wptr,name,"small",&alxw->Width,b->str,"width")
+                WINDOW_RETURNIF(s,wptr,name,"small",&alxw->Height,b->str,"height")
+                WINDOW_RETURNIF(s,wptr,name,"small",&alxw->Running,b->str,"running")
             }
         }else{
             printf("[Obj_Ass]: 1. Arg: %s is not a variable!\n",a->str);
@@ -125,13 +142,16 @@ Token Window_Handler_Cast(Scope* s,Token* op,Vector* args){
         return Token_Null();
     }
 
-    AlxWindow* window = (AlxWindow*)Variable_Data(a_var);
+    WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+    AlxWindow* alxw = (AlxWindow*)wptr->Memory;
 
     String builder = String_Make("{ ");
     
-    String_Append(&builder,window->Name);
-    String_AppendNumber(&builder,window->Width);
-    String_AppendNumber(&builder,window->Height);
+    String_Append(&builder,alxw->Name);
+    String_Append(&builder,",");
+    String_AppendNumber(&builder,alxw->Width);
+    String_Append(&builder,",");
+    String_AppendNumber(&builder,alxw->Height);
 
     String_Append(&builder," }");
     char* resstr = String_CStr(&builder);
@@ -141,7 +161,7 @@ Token Window_Handler_Cast(Scope* s,Token* op,Vector* args){
 Token Window_Handler_Destroy(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
-    printf("DESTROY: %s\n",a->str);
+    //printf("DESTROY: %s\n",a->str);
 
     Variable* a_var = Scope_FindVariable(s,a->str);
     if(a_var){
@@ -176,7 +196,6 @@ Variable Window_Make(Scope* sc,CStr name,Variable* args){
 }
 Variable Window_Init(Scope* sc,CStr name,Variable* args){
     Variable* a_var = &args[0];
-    printf("CALL INIT\n");
     
     if(!Variable_Data(a_var)){
         printf("[Window]: Update -> %s is not init!\n",a_var->name);
@@ -210,6 +229,122 @@ Variable Window_Render(Scope* sc,CStr name,Variable* args){
         WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
         AlxWindow* alxw = (AlxWindow*)wptr->Memory;
         AlxWindow_Render(alxw);
+    }
+
+    return Variable_Null();
+}
+Variable Window_Running(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    
+    Boolean b = 0;
+    if(!Variable_Data(a_var)){
+        printf("[Window]: Running -> %s is not init!\n",a_var->name);
+    }else{
+        WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+        AlxWindow* alxw = (AlxWindow*)wptr->Memory;
+        b = (Boolean)alxw->Running;
+    }
+
+    return Variable_Make(
+        ".RUNNING",
+        "bool",
+        (Boolean[]){ b },
+        sizeof(Boolean),
+        sc->range,
+        Scope_DestroyerOfType(sc,"bool"),
+        Scope_CpyerOfType(sc,"bool")
+    );
+}
+
+Variable Window_Elapsed(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    Variable* key_var = &args[1];
+    Variable* action_var = &args[2];
+    
+    Double b = 0.0;
+    if(!Variable_Data(a_var)){
+        printf("[Window]: Elapsed -> %s is not init!\n",a_var->name);
+    }else{
+        WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+        AlxWindow* alxw = (AlxWindow*)wptr->Memory;
+        b = (Double)alxw->ElapsedTime;
+    }
+
+    return Variable_Make(
+        ".KEYSTATE",
+        "float",
+        (Double[]){ b },
+        sizeof(Double),
+        sc->range,
+        Scope_DestroyerOfType(sc,"float"),
+        Scope_CpyerOfType(sc,"float")
+    );
+}
+Variable Window_Key(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    Variable* key_var = &args[1];
+    Variable* action_var = &args[2];
+    
+    Boolean b = 0;
+    if(!Variable_Data(a_var)){
+        printf("[Window]: Render -> %s is not init!\n",a_var->name);
+    }else{
+        WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+        AlxWindow* alxw = (AlxWindow*)wptr->Memory;
+
+        CStr key = *(CStr*)Variable_Data(key_var);
+        CStr action = *(CStr*)Variable_Data(action_var);
+
+        b = Window_GetKey(alxw,key,action);
+    }
+
+    return Variable_Make(
+        ".KEYSTATE",
+        "bool",
+        (Boolean[]){ b },
+        sizeof(Boolean),
+        sc->range,
+        Scope_DestroyerOfType(sc,"bool"),
+        Scope_CpyerOfType(sc,"bool")
+    );
+}
+
+Variable Window_Clear(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    Variable* p_var = &args[1];
+    
+    if(!Variable_Data(a_var)){
+        printf("[Window]: Clear -> %s is not init!\n",a_var->name);
+    }else{
+        WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+        AlxWindow* alxw = (AlxWindow*)wptr->Memory;
+
+        Pixel p = (Pixel)(*(Number*)Variable_Data(p_var));
+        Graphics_Clear(alxw->Buffer,alxw->Width,alxw->Height,p);
+    }
+
+    return Variable_Null();
+}
+Variable Window_Rect(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    Variable* x_var = &args[1];
+    Variable* y_var = &args[2];
+    Variable* w_var = &args[3];
+    Variable* h_var = &args[4];
+    Variable* p_var = &args[5];
+    
+    if(!Variable_Data(a_var)){
+        printf("[Window]: Clear -> %s is not init!\n",a_var->name);
+    }else{
+        WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+        AlxWindow* alxw = (AlxWindow*)wptr->Memory;
+
+        Double x = *(Double*)Variable_Data(x_var);
+        Double y = *(Double*)Variable_Data(y_var);
+        Double w = *(Double*)Variable_Data(w_var);
+        Double h = *(Double*)Variable_Data(h_var);
+        Pixel p = (Pixel)(*(Number*)Variable_Data(p_var));
+        Rect_RenderXX(alxw->Buffer,alxw->Width,alxw->Height,x,y,w,h,p);
     }
 
     return Variable_Null();
@@ -254,4 +389,34 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
         Member_New("window","w"),
         MEMBER_END
     },(void*)Window_Render));
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("running","bool",(Member[]){ 
+        Member_New("window","w"),
+        MEMBER_END
+    },(void*)Window_Running));
+    
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("elapsed","float",(Member[]){ 
+        Member_New("window","w"),
+        MEMBER_END
+    },(void*)Window_Elapsed));
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("key","bool",(Member[]){ 
+        Member_New("window","w"),
+        Member_New("str","key"),
+        Member_New("str","action"),
+        MEMBER_END
+    },(void*)Window_Key));
+
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("clear",NULL,(Member[]){ 
+        Member_New("window","w"),
+        Member_New("int","p"),
+        MEMBER_END
+    },(void*)Window_Clear));
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("rect",NULL,(Member[]){ 
+        Member_New("window","w"),
+        Member_New("float","x"),
+        Member_New("float","y"),
+        Member_New("float","width"),
+        Member_New("float","height"),
+        Member_New("int","p"),
+        MEMBER_END
+    },(void*)Window_Rect));
 }
