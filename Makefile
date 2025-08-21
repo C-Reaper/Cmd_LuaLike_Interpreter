@@ -20,9 +20,11 @@ SO_FILES = $(patsubst $(LIB_DIR)/%.c,$(BIN_DIR)/%.so,$(LIB_FILES))
 TARGET = $(BUILD_DIR)/Main
 
 all:
+	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Main.c -o ./$(TARGET) $(LDFLAGS) 
 
 clean:
+	mkdir -p $(BUILD_DIR)
 	rm -rf $(BUILD_DIR)/*
 
 lib: $(SO_FILES)
