@@ -106,7 +106,7 @@ Token Window_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var)){
-                printf("[Obj_Acs]: 1. Arg: %s is not a init obj type!\n",a->str);
+                printf("[Window_Acs]: 1. Arg: %s is not a init window type!\n",a->str);
                 return Token_Null();
             }else{
                 WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
@@ -119,11 +119,11 @@ Token Window_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
                 WINDOW_RETURNIF(s,wptr,name,"small",&alxw->Running,b->str,"running")
             }
         }else{
-            printf("[Obj_Ass]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Window_Ass]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[Obj_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Window_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
