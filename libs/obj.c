@@ -6,11 +6,11 @@
 typedef VariableMap Object;// Vector<Variable>
 
 void Obj_Destroyer(Variable* v){
-    printf("Obj: Destroyer!\n");
+    //printf("Obj: Destroyer!\n");
     VariableMap_Free(Variable_Data(v));
 }
 void Obj_Cpyer(Variable* src,Variable* dst){
-    printf("Obj: Cpyer!\n");
+    //printf("Obj: Cpyer!\n");
     Object* src_str = (Object*)Variable_Data(src);
     Object* dst_str = (Object*)Variable_Data(dst);
     *dst_str = VariableMap_Cpy(src_str);
@@ -20,7 +20,7 @@ Token Obj_Obj_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("ASS: %s = %s\n",a->str,b->str);
+    //printf("ASS: %s = %s\n",a->str,b->str);
 
     Variable* b_var;
     if(b->tt==TOKEN_STRING){
@@ -55,7 +55,7 @@ Token Obj_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("ACS: %s.%s\n",a->str,b->str);
+    //printf("ACS: %s.%s\n",a->str,b->str);
     
     CStr name = NULL;
     if(a->tt==TOKEN_STRING){
@@ -74,7 +74,6 @@ Token Obj_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
                 }
 
                 String strbuilder = String_Make(".OBJACS");
-    
                 Variable* temp = Scope_FindVariableLike(s,".OBJACS*",'*');
                 
                 if(temp){
@@ -88,7 +87,7 @@ Token Obj_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
                     name = CStr_Cpy(".OBJACS0");
                 }
 
-                Scope_BuildRefVariableRange(s,name,member->typename,s->range+1,member);
+                Scope_BuildRefVariableRange(s,name,member->typename,s->range,member);
             }
         }else{
             printf("[Obj_Ass]: 1. Arg: %s is not a variable!\n",a->str);
@@ -147,7 +146,7 @@ Token Obj_Handler_Cast(Scope* s,Token* op,Vector* args){
 Token Obj_Handler_Destroy(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
-    printf("DESTROY: %s\n",a->str);
+    //printf("DESTROY: %s\n",a->str);
 
     Variable* a_var = Scope_FindVariable(s,a->str);
     if(a_var){

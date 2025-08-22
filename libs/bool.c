@@ -10,14 +10,14 @@ Boolean Implementation_BooleanOf(Scope* s,Token* a){
         if(a_var){
             n = *(Boolean*)Variable_Data(a_var);
         }else{
-            printf("[Int_Boolean]: 1. Arg: Variable %s doesn't exist!\n",a->str);
+            printf("[Boolean]: Impl -> 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else if(a->tt==TOKEN_BOOL){
         n = Boolean_Parse(a->str);
     }else if(a->tt == TOKEN_NUMBER){
         n = Number_Parse(a->str) != 0;
     }else{
-        printf("[Int_Boolean]: 1. Arg: %s is not a int type!\n",a->str);
+        printf("[Boolean]: Impl -> 1. Arg: %s is not a bool type!\n",a->str);
     }
     return n;
 }

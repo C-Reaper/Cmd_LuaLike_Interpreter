@@ -34,6 +34,10 @@ Boolean Window_GetKey(AlxWindow* alxw,CStr key,CStr action){
     WINDOW_TESTKEY(key,S)
     WINDOW_TESTKEY(key,A)
     WINDOW_TESTKEY(key,D)
+    WINDOW_TESTKEY(key,UP)
+    WINDOW_TESTKEY(key,DOWN)
+    WINDOW_TESTKEY(key,LEFT)
+    WINDOW_TESTKEY(key,RIGHT)
 
     Boolean state = 0;
     if(CStr_Cmp(action,"pressed"))  state = keystates.PRESSED;
@@ -255,6 +259,50 @@ Variable Window_Running(Scope* sc,CStr name,Variable* args){
         Scope_CpyerOfType(sc,"bool")
     );
 }
+Variable Window_Width(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    
+    Double b = 0;
+    if(!Variable_Data(a_var)){
+        printf("[Window]: Width -> %s is not init!\n",a_var->name);
+    }else{
+        WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+        AlxWindow* alxw = (AlxWindow*)wptr->Memory;
+        b = (Double)alxw->Width;
+    }
+
+    return Variable_Make(
+        ".WIDTH",
+        "float",
+        (Double[]){ b },
+        sizeof(Double),
+        sc->range,
+        Scope_DestroyerOfType(sc,"float"),
+        Scope_CpyerOfType(sc,"float")
+    );
+}
+Variable Window_Height(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    
+    Double b = 0;
+    if(!Variable_Data(a_var)){
+        printf("[Window]: Height -> %s is not init!\n",a_var->name);
+    }else{
+        WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+        AlxWindow* alxw = (AlxWindow*)wptr->Memory;
+        b = (Double)alxw->Height;
+    }
+
+    return Variable_Make(
+        ".HEIGHT",
+        "float",
+        (Double[]){ b },
+        sizeof(Double),
+        sc->range,
+        Scope_DestroyerOfType(sc,"float"),
+        Scope_CpyerOfType(sc,"float")
+    );
+}
 
 Variable Window_Elapsed(Scope* sc,CStr name,Variable* args){
     Variable* a_var = &args[0];
@@ -334,7 +382,7 @@ Variable Window_Rect(Scope* sc,CStr name,Variable* args){
     Variable* p_var = &args[5];
     
     if(!Variable_Data(a_var)){
-        printf("[Window]: Clear -> %s is not init!\n",a_var->name);
+        printf("[Window]: Rect -> %s is not init!\n",a_var->name);
     }else{
         WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
         AlxWindow* alxw = (AlxWindow*)wptr->Memory;
@@ -345,6 +393,28 @@ Variable Window_Rect(Scope* sc,CStr name,Variable* args){
         Double h = *(Double*)Variable_Data(h_var);
         Pixel p = (Pixel)(*(Number*)Variable_Data(p_var));
         Rect_RenderXX(alxw->Buffer,alxw->Width,alxw->Height,x,y,w,h,p);
+    }
+
+    return Variable_Null();
+}
+Variable Window_String(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    Variable* s_var = &args[1];
+    Variable* x_var = &args[2];
+    Variable* y_var = &args[3];
+    Variable* p_var = &args[4];
+    
+    if(!Variable_Data(a_var)){
+        printf("[Window]: String -> %s is not init!\n",a_var->name);
+    }else{
+        WindowPtr* wptr = (WindowPtr*)Variable_Data(a_var);
+        AlxWindow* alxw = (AlxWindow*)wptr->Memory;
+
+        CStr s = *(CStr*)Variable_Data(s_var);
+        Double x = *(Double*)Variable_Data(x_var);
+        Double y = *(Double*)Variable_Data(y_var);
+        Pixel p = (Pixel)(*(Number*)Variable_Data(p_var));
+        CStr_RenderAlxFont(alxw->Buffer,alxw->Width,alxw->Height,&alxw->AlxFont,s,x,y,p);
     }
 
     return Variable_Null();
@@ -393,6 +463,14 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
         Member_New("window","w"),
         MEMBER_END
     },(void*)Window_Running));
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("width","float",(Member[]){ 
+        Member_New("window","w"),
+        MEMBER_END
+    },(void*)Window_Width));
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("height","float",(Member[]){ 
+        Member_New("window","w"),
+        MEMBER_END
+    },(void*)Window_Height));
     
     ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("elapsed","float",(Member[]){ 
         Member_New("window","w"),
@@ -419,4 +497,13 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
         Member_New("int","p"),
         MEMBER_END
     },(void*)Window_Rect));
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("string",NULL,(Member[]){ 
+        Member_New("window","w"),
+        Member_New("str","s"),
+        Member_New("float","x"),
+        Member_New("float","y"),
+        Member_New("int","p"),
+        MEMBER_END
+    },(void*)Window_String));
+
 }

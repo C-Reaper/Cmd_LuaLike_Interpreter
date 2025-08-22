@@ -32,27 +32,49 @@ Variable math_parseFloat(Scope* sc,CStr name,Variable* args){
     Variable ret = Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
     return ret;
 }
+Variable math_getInt(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    
+    CStr out = Number_Get(*(Number*)a->data);
+    Variable ret = Variable_Make("OUT","str",(CStr[]){ out },sizeof(CStr),0,Scope_DestroyerOfType(sc,"str"),Scope_CpyerOfType(sc,"str"));
+    return ret;
+}
+Variable math_getFloat(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    
+    CStr out = Double_Get(*(Double*)a->data,8);
+    Variable ret = Variable_Make("OUT","str",(CStr[]){ out },sizeof(CStr),0,Scope_DestroyerOfType(sc,"str"),Scope_CpyerOfType(sc,"str"));
+    return ret;
+}
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>
     ExternFunctionMap_PushContained_C(Extern_Functions,funcs,(ExternFunction[]){
-        ExternFunction_New("min",NULL,(Member[]){ 
-            Member_New(NULL,"a"),
-            Member_New(NULL,"b"),
+        ExternFunction_New("min","int",(Member[]){ 
+            Member_New("int","a"),
+            Member_New("int","b"),
             MEMBER_END
         },(void*)math_min),
-        ExternFunction_New("max",NULL,(Member[]){ 
-            Member_New(NULL,"a"),
-            Member_New(NULL,"b"),
+        ExternFunction_New("max","int",(Member[]){ 
+            Member_New("int","a"),
+            Member_New("int","b"),
             MEMBER_END
         },(void*)math_max),
-        ExternFunction_New("parseInt",NULL,(Member[]){ 
-            Member_New(NULL,"a"),
+        ExternFunction_New("parseInt","int",(Member[]){ 
+            Member_New("str","a"),
             MEMBER_END
         },(void*)math_parseInt),
-        ExternFunction_New("parseFloat",NULL,(Member[]){ 
-            Member_New(NULL,"a"),
+        ExternFunction_New("parseFloat","float",(Member[]){ 
+            Member_New("str","a"),
             MEMBER_END
         },(void*)math_parseFloat),
+        ExternFunction_New("getInt","str",(Member[]){ 
+            Member_New("int","a"),
+            MEMBER_END
+        },(void*)math_getInt),
+        ExternFunction_New("getFloat","str",(Member[]){ 
+            Member_New("float","a"),
+            MEMBER_END
+        },(void*)math_getFloat),
         ExternFunction_Null()
     });
 }

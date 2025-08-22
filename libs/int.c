@@ -14,6 +14,8 @@ Number Implementation_IntOf(Scope* s,Token* a){
         }
     }else if(a->tt==TOKEN_NUMBER){
         n = Number_Parse(a->str);
+    }else if(a->tt==TOKEN_FLOAT){
+        n = (Number)Double_Parse(a->str,1);
     }else{
         printf("[Int_Number]: 1. Arg: %s is not a int type!\n",a->str);
     }
