@@ -73,6 +73,43 @@ Token Boolean_Boolean_Handler_Equ(Scope* s,Token* op,Vector* args){
     char* resstr = Boolean_Get(res);
     return Token_Move(TOKEN_BOOL,resstr);
 }
+Token Boolean_Boolean_Handler_And(Scope* s,Token* op,Vector* args){
+    Token* a = (Token*)Vector_Get(args,0);
+    Token* b = (Token*)Vector_Get(args,1);
+
+    //printf("AND: %s && %s\n",a->str,b->str);
+
+    Boolean n1 = Implementation_BooleanOf(s,a);
+    Boolean n2 = Implementation_BooleanOf(s,b);
+    Boolean res = n1 && n2;
+
+    char* resstr = Boolean_Get(res);
+    return Token_Move(TOKEN_BOOL,resstr);
+}
+Token Boolean_Boolean_Handler_Or(Scope* s,Token* op,Vector* args){
+    Token* a = (Token*)Vector_Get(args,0);
+    Token* b = (Token*)Vector_Get(args,1);
+
+    //printf("OR: %s || %s\n",a->str,b->str);
+
+    Boolean n1 = Implementation_BooleanOf(s,a);
+    Boolean n2 = Implementation_BooleanOf(s,b);
+    Boolean res = n1 || n2;
+
+    char* resstr = Boolean_Get(res);
+    return Token_Move(TOKEN_BOOL,resstr);
+}
+Token Boolean_Handler_Not(Scope* s,Token* op,Vector* args){
+    Token* a = (Token*)Vector_Get(args,0);
+
+    //printf("NOT: !%s\n",a->str,b->str);
+
+    Boolean n1 = Implementation_BooleanOf(s,a);
+    Boolean res = !n1;
+
+    char* resstr = Boolean_Get(res);
+    return Token_Move(TOKEN_BOOL,resstr);
+}
 Token Boolean_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
@@ -87,6 +124,7 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
     TypeMap_PushContained(&s->types,funcs,
         Type_New("boolean",1,OperatorInterationMap_Make((OperatorInterater[]){
             OperatorInterater_Make((CStr[]){ NULL },OperatorDefineMap_Make((OperatorDefiner[]){
+                OperatorDefiner_New(TOKEN_LUALIKE_LOT,Boolean_Handler_Not),
                 OperatorDefiner_New(TOKEN_CAST,Boolean_Handler_Cast),
                 OperatorDefiner_New(TOKEN_INIT,NULL),
                 OperatorDefiner_New(TOKEN_DESTROY,NULL),
@@ -95,6 +133,8 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
             OperatorInterater_Make((CStr[]){ "boolean",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
                 OperatorDefiner_New(TOKEN_LUALIKE_ASS,Boolean_Boolean_Handler_Ass),
                 OperatorDefiner_New(TOKEN_LUALIKE_EQU,Boolean_Boolean_Handler_Equ),
+                OperatorDefiner_New(TOKEN_LUALIKE_LND,Boolean_Boolean_Handler_And),
+                OperatorDefiner_New(TOKEN_LUALIKE_LOR, Boolean_Boolean_Handler_Or),
                 OPERATORDEFINER_END
             })),
             OPERATORINTERATER_END

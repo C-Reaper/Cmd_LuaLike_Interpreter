@@ -98,7 +98,7 @@ function main()
             score1 = score1 + 1
         end
 
-        if rect1.x < (ball.x - PADDLEWIDTH)
+        if rect1.x < (ball.x - PADDLEWIDTH) 
         elif rect1.x >= (ball.x + BALLWIDTH)
         elif rect1.y < (ball.y - PADDLEHEIGHT)
         elif rect1.y >= (ball.y + BALLHEIGHT)
