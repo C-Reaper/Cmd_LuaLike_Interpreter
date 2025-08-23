@@ -15,7 +15,16 @@ class vec2
 end
 
 function overlap(rect1p,rect1d,rect2p,rect2d)
-    return rect1p.x >= rect2p.x - rect1d.x && rect1p.x < rect2p.x + rect2d.x && rect1p.y >= rect2p.y - rect1d.y && rect1p.y < rect2p.y + rect2d.y
+    if rect1p.x < (rect2p.x - rect1d.x)
+        return false
+    elif rect1p.x >= (rect2p.x + rect2d.x)
+        return false
+    elif rect1p.y < (rect2p.y - rect1d.y)
+        return false
+    elif rect1p.y >= (rect2p.y + rect2d.y)
+        return false        
+    end
+    return true
 end
 
 function main()
@@ -56,13 +65,13 @@ function main()
         if rect1.y < 0.0
             rect1.y = 0.0
         end
-        if rect1.y > 1.0 - PADDLEHEIGHT
+        if rect1.y > (1.0 - PADDLEHEIGHT)
             rect1.y = 1.0 - PADDLEHEIGHT
         end
         if rect2.y < 0.0
             rect2.y = 0.0
         end
-        if rect2.y > 1.0 - PADDLEHEIGHT
+        if rect2.y > (1.0 - PADDLEHEIGHT)
             rect2.y = 1.0 - PADDLEHEIGHT
         end
 
@@ -70,11 +79,11 @@ function main()
             ball.y = 0.0
             ballvelo.y = -ballvelo.y * 1.05
         end
-        if ball.y > 1.0 - BALLHEIGHT
+        if ball.y > (1.0 - BALLHEIGHT)
             ball.y = 1.0 - BALLHEIGHT
             ballvelo.y = -ballvelo.y * 1.05
         end
-        if ball.x < -PADDLEWIDTH
+        if ball.x < (-PADDLEWIDTH)
             ball.x = 0.5
             ball.y = 0.5
             ballvelo.x = 0.2
@@ -95,7 +104,7 @@ function main()
         if overlap(rect1,vec2::new(PADDLEWIDTH,PADDLEHEIGHT),ball,vec2::new(BALLWIDTH,BALLHEIGHT))
             ballvelo.x = -ballvelo.x * 1.1
         end
-        if overlap(rect2,vec2::new(PADDLEWIDTH,PADDLEHEIGHT),ball,vec2::new(BALLWIDTH,BALLHEIGHT))
+        if rect2.x >= (ball.x - PADDLEWIDTH) && rect2.x < (ball.x + BALLWIDTH) && rect2.y >= (ball.y - PADDLEHEIGHT) && rect2.y < (ball.y + BALLHEIGHT)
             ballvelo.x = -ballvelo.x * 1.1
         end
 
@@ -116,5 +125,5 @@ function main()
         sys::msleep(5)
     end
 
-    return 1
+    return 0
 end

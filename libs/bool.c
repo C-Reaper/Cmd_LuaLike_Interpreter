@@ -40,16 +40,16 @@ Token Boolean_Boolean_Handler_Ass(Scope* s,Token* op,Vector* args){
     }else if(b->tt==TOKEN_BOOL){
         n2 = Boolean_Parse(b->str);
     }else{
-        printf("[Boolean_Ass]: 2. Arg: %s is not a boolean type!\n",b->str);
+        printf("[Boolean_Ass]: 2. Arg: %s is not a bool type!\n",b->str);
     }
     
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
-            Variable_PrepairFor(a_var,sizeof(Boolean),"boolean",NULL,NULL);
+            Variable_PrepairFor(a_var,sizeof(Boolean),"bool",NULL,NULL);
             Variable_SetTo(a_var,(Boolean[]){ n2 });
         }else{
-            Scope_BuildInitVariableRange(s,a->str,"boolean",s->range-1,(Boolean[]){ n2 });
+            Scope_BuildInitVariableRange(s,a->str,"bool",s->range-1,(Boolean[]){ n2 });
         }
     }else{
         printf("[Boolean_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
@@ -122,7 +122,7 @@ Token Boolean_Handler_Cast(Scope* s,Token* op,Vector* args){
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>
     TypeMap_PushContained(&s->types,funcs,
-        Type_New("boolean",1,OperatorInterationMap_Make((OperatorInterater[]){
+        Type_New("bool",sizeof(Boolean),OperatorInterationMap_Make((OperatorInterater[]){
             OperatorInterater_Make((CStr[]){ NULL },OperatorDefineMap_Make((OperatorDefiner[]){
                 OperatorDefiner_New(TOKEN_LUALIKE_LOT,Boolean_Handler_Not),
                 OperatorDefiner_New(TOKEN_CAST,Boolean_Handler_Cast),
@@ -130,11 +130,11 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
                 OperatorDefiner_New(TOKEN_DESTROY,NULL),
                 OPERATORDEFINER_END
             })),
-            OperatorInterater_Make((CStr[]){ "boolean",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
+            OperatorInterater_Make((CStr[]){ "bool",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
                 OperatorDefiner_New(TOKEN_LUALIKE_ASS,Boolean_Boolean_Handler_Ass),
                 OperatorDefiner_New(TOKEN_LUALIKE_EQU,Boolean_Boolean_Handler_Equ),
                 OperatorDefiner_New(TOKEN_LUALIKE_LND,Boolean_Boolean_Handler_And),
-                OperatorDefiner_New(TOKEN_LUALIKE_LOR, Boolean_Boolean_Handler_Or),
+                OperatorDefiner_New(TOKEN_LUALIKE_LOR,Boolean_Boolean_Handler_Or),
                 OPERATORDEFINER_END
             })),
             OPERATORINTERATER_END
