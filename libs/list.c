@@ -626,39 +626,39 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
     TypeMap_PushContained(&s->types,funcs,
         Type_New("list",sizeof(Listtype),OperatorInterationMap_Make((OperatorInterater[]){
             OperatorInterater_Make((CStr[]){ NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_CAST,List_Handler_Cast),
+                OperatorDefiner_New(TOKEN_CAST,(Token(*)(void*,Token*,Vector*))List_Handler_Cast),
                 OperatorDefiner_New(TOKEN_INIT,NULL),
                 OperatorDefiner_New(TOKEN_DESTROY,NULL),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "list",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASS,List_List_Handler_Ass),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,List_List_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASS,(Token(*)(void*,Token*,Vector*))List_List_Handler_Ass),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_List_Handler_Asd),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "int",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_SUBS,List_Int_Handler_Subs),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,List_Int_Handler_Asd),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASU,List_Int_Handler_Asu),
+                OperatorDefiner_New(TOKEN_LUALIKE_SUBS,(Token(*)(void*,Token*,Vector*))List_Int_Handler_Subs),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Int_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASU,(Token(*)(void*,Token*,Vector*))List_Int_Handler_Asu),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "str",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_SUBS,List_Str_Handler_Subs),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,List_Str_Handler_Asd),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASU,List_Str_Handler_Asu),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASM,List_Str_Handler_Asm),
+                OperatorDefiner_New(TOKEN_LUALIKE_SUBS,(Token(*)(void*,Token*,Vector*))List_Str_Handler_Subs),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Str_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASU,(Token(*)(void*,Token*,Vector*))List_Str_Handler_Asu),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASM,(Token(*)(void*,Token*,Vector*))List_Str_Handler_Asm),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "Boolean",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,List_Boolean_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Boolean_Handler_Asd),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "float",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,List_Float_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Float_Handler_Asd),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "obj",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,List_Obj_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Obj_Handler_Asd),
                 OPERATORDEFINER_END
             })),
             OPERATORINTERATER_END

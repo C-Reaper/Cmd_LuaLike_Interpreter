@@ -395,27 +395,27 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
     TypeMap_PushContained(&s->types,funcs,
         Type_New("vec2",sizeof(Vec2),OperatorInterationMap_Make((OperatorInterater[]){
             OperatorInterater_Make((CStr[]){ NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_CAST,Vec2_Handler_Cast),
+                OperatorDefiner_New(TOKEN_CAST,(Token(*)(void*,Token*,Vector*))Vec2_Handler_Cast),
                 OperatorDefiner_New(TOKEN_INIT,NULL),
                 OperatorDefiner_New(TOKEN_DESTROY,NULL),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "vec2",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASS,Vec2_Vec2_Handler_Ass),
-                OperatorDefiner_New(TOKEN_LUALIKE_ADD,Vec2_Vec2_Handler_Add),
-                OperatorDefiner_New(TOKEN_LUALIKE_SUB,Vec2_Vec2_Handler_Sub),
-                OperatorDefiner_New(TOKEN_LUALIKE_MUL,Vec2_Vec2_Handler_Mul),
-                OperatorDefiner_New(TOKEN_LUALIKE_DIV,Vec2_Vec2_Handler_Div),
-                OperatorDefiner_New(TOKEN_LUALIKE_EQU,Vec2_Vec2_Handler_Equ),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASS,(Token(*)(void*,Token*,Vector*))Vec2_Vec2_Handler_Ass),
+                OperatorDefiner_New(TOKEN_LUALIKE_ADD,(Token(*)(void*,Token*,Vector*))Vec2_Vec2_Handler_Add),
+                OperatorDefiner_New(TOKEN_LUALIKE_SUB,(Token(*)(void*,Token*,Vector*))Vec2_Vec2_Handler_Sub),
+                OperatorDefiner_New(TOKEN_LUALIKE_MUL,(Token(*)(void*,Token*,Vector*))Vec2_Vec2_Handler_Mul),
+                OperatorDefiner_New(TOKEN_LUALIKE_DIV,(Token(*)(void*,Token*,Vector*))Vec2_Vec2_Handler_Div),
+                OperatorDefiner_New(TOKEN_LUALIKE_EQU,(Token(*)(void*,Token*,Vector*))Vec2_Vec2_Handler_Equ),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "float",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_MUL,Vec2_Float_Handler_Mul),
-                OperatorDefiner_New(TOKEN_LUALIKE_DIV,Vec2_Float_Handler_Div),
+                OperatorDefiner_New(TOKEN_LUALIKE_MUL,(Token(*)(void*,Token*,Vector*))Vec2_Float_Handler_Mul),
+                OperatorDefiner_New(TOKEN_LUALIKE_DIV,(Token(*)(void*,Token*,Vector*))Vec2_Float_Handler_Div),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ OPERATORINTERATER_DONTCARE,NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ACS,Vec2_Any_Handler_Acs),
+                OperatorDefiner_New(TOKEN_LUALIKE_ACS,(Token(*)(void*,Token*,Vector*))Vec2_Any_Handler_Acs),
                 OPERATORDEFINER_END
             })),
             OPERATORINTERATER_END
