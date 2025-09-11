@@ -17,17 +17,17 @@ OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 LIB_FILES = $(wildcard $(LIB_DIR)/*.c)
 SO_FILES = $(patsubst $(LIB_DIR)/%.c,$(BIN_DIR)/%.so,$(LIB_FILES))
 
-TARGET = $(BUILD_DIR)/Geogebra
+TARGET = $(BUILD_DIR)/Main
 
 all: 
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Geogebra.c -o ./$(TARGET) $(LDFLAGS) 
+	$(CC) $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Main.c -o ./$(TARGET) $(LDFLAGS) 
 
 alldebug: 
-	$(CC) -g $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Geogebra.c -o ./$(TARGET) $(LDFLAGS) 
+	$(CC) -g $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Main.c -o ./$(TARGET) $(LDFLAGS) 
 
 exe:
-	./$(TARGET) ./code/Geogebra.ll
+	./$(TARGET) ./code/Function.ll
 
 debug:
 	gdb ./$(TARGET)
