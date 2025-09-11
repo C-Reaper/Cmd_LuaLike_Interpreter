@@ -18,6 +18,34 @@ Variable math_max(Scope* sc,CStr name,Variable* args){
     Variable ret = Variable_Make("OUT","int",(Number[]){ out },sizeof(Number),0,NULL,NULL);
     return ret;
 }
+
+Variable math_sin(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    Double out = sin(*(Double*)Variable_Data(a));
+    Variable ret = Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
+    return ret;
+}
+Variable math_cos(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    Double out = cos(*(Double*)Variable_Data(a));
+    Variable ret = Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
+    return ret;
+}
+Variable math_tan(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    Double out = tan(*(Double*)Variable_Data(a));
+    Variable ret = Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
+    return ret;
+}
+
+Variable math_pow(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    Variable* b = &args[1];
+    Double out = pow(*(Double*)Variable_Data(a),*(Double*)Variable_Data(b));
+    Variable ret = Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
+    return ret;
+}
+
 Variable math_parseInt(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     
@@ -59,6 +87,23 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
             Member_New("int","b"),
             MEMBER_END
         },(void*)math_max),
+        ExternFunction_New("sin","float",(Member[]){ 
+            Member_New("float","a"),
+            MEMBER_END
+        },(void*)math_sin),
+        ExternFunction_New("cos","float",(Member[]){ 
+            Member_New("float","a"),
+            MEMBER_END
+        },(void*)math_cos),
+        ExternFunction_New("tan","float",(Member[]){ 
+            Member_New("float","a"),
+            MEMBER_END
+        },(void*)math_tan),
+        ExternFunction_New("pow","float",(Member[]){ 
+            Member_New("float","a"),
+            Member_New("float","b"),
+            MEMBER_END
+        },(void*)math_pow),
         ExternFunction_New("parseInt","int",(Member[]){ 
             Member_New("str","a"),
             MEMBER_END

@@ -196,7 +196,7 @@ Token Float_Handler_Cast(Scope* s,Token* op,Vector* args){
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>
     TypeMap_PushContained(&s->types,funcs,
-        Type_New("float",8,OperatorInterationMap_Make((OperatorInterater[]){
+        Type_New("float",sizeof(Double),OperatorInterationMap_Make((OperatorInterater[]){
             OperatorInterater_Make((CStr[]){ NULL },OperatorDefineMap_Make((OperatorDefiner[]){
                 OperatorDefiner_New(TOKEN_LUALIKE_NEG,  (Token(*)(void*,Token*,Vector*))Float_Float_Handler_Neg),
                 OperatorDefiner_New(TOKEN_CAST,         (Token(*)(void*,Token*,Vector*))Float_Handler_Cast),

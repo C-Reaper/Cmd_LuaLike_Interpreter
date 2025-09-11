@@ -1,8 +1,8 @@
 CC = gcc
 #CFLAGS = -Wall -Wextra -std=c11 -O2 -g -mavx2
-CFLAGS = -O0 -mavx2
+CFLAGS = -O2 -mavx2
 INCLUDES = -Isrc
-LDFLAGS = -lm
+LDFLAGS = -lm -lX11
 
 SRC_DIR = src
 BUILD_DIR = build
@@ -17,15 +17,27 @@ OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 LIB_FILES = $(wildcard $(LIB_DIR)/*.c)
 SO_FILES = $(patsubst $(LIB_DIR)/%.c,$(BIN_DIR)/%.so,$(LIB_FILES))
 
-TARGET = $(BUILD_DIR)/Main
+TARGET = $(BUILD_DIR)/Geogebra
 
-all:
+all: 
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Main.c -o ./$(TARGET) $(LDFLAGS) 
+	$(CC) $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Geogebra.c -o ./$(TARGET) $(LDFLAGS) 
+
+alldebug: 
+	$(CC) -g $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Geogebra.c -o ./$(TARGET) $(LDFLAGS) 
+
+exe:
+	./$(TARGET) ./code/Geogebra.ll
+
+debug:
+	gdb ./$(TARGET)
 
 clean:
 	mkdir -p $(BUILD_DIR)
 	rm -rf $(BUILD_DIR)/*
+
+cleanlib:
+	rm -rf $(BIN_DIR)/*
 
 lib: $(SO_FILES)
 
@@ -35,10 +47,6 @@ $(BIN_DIR)/%.so: $(LIB_DIR)/%.c
 win:
 	$(CC) $(CFLAGS) -fPIC -o ./$(BIN_DIR)/window.so ./$(LIB_DIR)/window.c -shared $(LDFLAGS) -lX11 -lpng
 
-cleanlib:
-	rm -rf $(BIN_DIR)/*
-
-exe:
-	./$(TARGET) ./code/Function.ll
-
 do: clean all exe
+
+dg: clean alldebug debug

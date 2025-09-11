@@ -126,8 +126,6 @@ int main(int argc,char** argv){
         return 1;
     }
 
-    LuaLike ll = LuaLike_New(argv[1],"./bin");
-
     //LuaLike_CreateType_Std(&ll,"human",sizeof(Human),Human_Handler_Cast,Human_Human_Handler_Ass,Human_Destroyer,Human_Cpyer);
     //LuaLike_CreateFunc_Std(&ll,"C","humannew",NULL,(Member[]){ MEMBER_END },(void*)Human_human);
     
@@ -142,19 +140,18 @@ int main(int argc,char** argv){
     
     //LuaLike_Print(&ll);
 
+    LuaLike ll = LuaLike_New(argv[1],"./bin");
     Variable ret = LuaLike_Function(&ll,"main",(Variable[]){ 
         VARIABLE_END
     });
     LuaLike_PrintVariable(&ll,&ret);
     Variable_Free(&ret);
+    LuaLike_Free(&ll);
 
     //Variable_Free(&d);
     //Variable_Free(&c);
-    
     //Variable_Free(&b);
     //Variable_Free(&a);
-    
-    LuaLike_Free(&ll);
     
     return 0;
 }
