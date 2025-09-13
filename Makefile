@@ -18,6 +18,7 @@ LIB_FILES = $(wildcard $(LIB_DIR)/*.c)
 SO_FILES = $(patsubst $(LIB_DIR)/%.c,$(BIN_DIR)/%.so,$(LIB_FILES))
 
 TARGET = $(BUILD_DIR)/Main
+# Geogebra
 
 all: 
 	mkdir -p $(BUILD_DIR)
