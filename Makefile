@@ -1,6 +1,6 @@
 CC = gcc
 #CFLAGS = -Wall -Wextra -std=c11 -O2 -g -mavx2
-CFLAGS = -O2 -mavx2
+CFLAGS = -O2 -mavx2 -std=gnu17
 INCLUDES = -Isrc
 LDFLAGS = -lm -lX11
 
@@ -28,7 +28,7 @@ alldebug:
 	$(CC) -g $(CFLAGS) $(INCLUDES) ./$(SRC_DIR)/Main.c -o ./$(TARGET) $(LDFLAGS) 
 
 exe:
-	./$(TARGET) ./code/Function.ll
+	./$(TARGET) ./code/Pong.ll
 
 debug:
 	gdb ./$(TARGET)
