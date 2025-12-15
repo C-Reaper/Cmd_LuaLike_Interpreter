@@ -1,6 +1,5 @@
 from math import parseInt
 from math import parseFloat
-
 from io import print
 
 function main()
