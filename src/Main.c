@@ -108,7 +108,7 @@ Token Human_Handler_Cast(Scope* s,Token* op,Vector* args){
     return Token_Move(TOKEN_CONSTSTRING_DOUBLE,resstr);
 }
 
-Variable Human_human(Enviroment* ev,CStr name,Variable* args){
+Variable Human_human(Environment* ev,CStr name,Variable* args){
     Variable ret = Variable_Make(
         "HUMAN","human",
         (Human[]){ Human_New("DUMMY",0,0) },

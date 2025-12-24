@@ -1,6 +1,6 @@
 #include "/home/codeleaded/System/Static/Library/AlxCallStack.h"
 #include "/home/codeleaded/System/Static/Library/AlxExternFunctions.h"
-#include "/home/codeleaded/System/Static/Library/AlxEnviroment.h"
+#include "/home/codeleaded/System/Static/Library/AlxEnvironment.h"
 #include "/home/codeleaded/System/Static/Library/LuaLikeDefines.h"
 //#include "/home/codeleaded/Hecke/C/Cmd_Scripter/src/LuaLike.h"
 
@@ -49,7 +49,7 @@ Boolean Window_GetKey(AlxWindow* alxw,CStr key,CStr action){
 }
 CStr Window_BuildAcs(Scope* s,WindowPtr* wptr,CStr type,void* data,CStr name,CStr field){
     if(CStr_Cmp(name,field)){
-        CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+        CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
         Scope_BuildRefDataVariableRange(s,name,type,s->range,data);
         return name;
     }

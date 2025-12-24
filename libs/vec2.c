@@ -1,6 +1,6 @@
 #include "/home/codeleaded/System/Static/Library/AlxCallStack.h"
 #include "/home/codeleaded/System/Static/Library/AlxExternFunctions.h"
-#include "/home/codeleaded/System/Static/Library/AlxEnviroment.h"
+#include "/home/codeleaded/System/Static/Library/AlxEnvironment.h"
 #include "/home/codeleaded/System/Static/Library/LuaLikeDefines.h"
 //#include "/home/codeleaded/Hecke/C/Cmd_Scripter/src/LuaLike.h"
 
@@ -19,7 +19,7 @@ void Vec2_Cpyer(Variable* src,Variable* dst){
 
 CStr Vec2_BuildAcs(Scope* s,Vec2* v,CStr type,void* data,CStr name,CStr field){
     if(CStr_Cmp(name,field)){
-        CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+        CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
         Scope_BuildRefDataVariableRange(s,name,type,s->range,data);
         return name;
     }
@@ -141,7 +141,7 @@ Token Vec2_Vec2_Handler_Add(Scope* s,Token* op,Vector* args){
     Vec2 n2 = Implementation_Vec2Of(s,b);
     Vec2 res = Vec2_Add(n1,n2);
 
-    CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+    CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
     Scope_BuildInitVariableRange(s,name,"vec2",s->range,&res);
     return Token_Move(TOKEN_STRING,name);
 }
@@ -155,7 +155,7 @@ Token Vec2_Vec2_Handler_Sub(Scope* s,Token* op,Vector* args){
     Vec2 n2 = Implementation_Vec2Of(s,b);
     Vec2 res = Vec2_Sub(n1,n2);
 
-    CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+    CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
     Scope_BuildInitVariableRange(s,name,"vec2",s->range,&res);
     return Token_Move(TOKEN_STRING,name);
 }
@@ -169,7 +169,7 @@ Token Vec2_Vec2_Handler_Mul(Scope* s,Token* op,Vector* args){
     Vec2 n2 = Implementation_Vec2Of(s,b);
     Vec2 res = Vec2_Mul(n1,n2);
 
-    CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+    CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
     Scope_BuildInitVariableRange(s,name,"vec2",s->range,&res);
     return Token_Move(TOKEN_STRING,name);
 }
@@ -183,7 +183,7 @@ Token Vec2_Vec2_Handler_Div(Scope* s,Token* op,Vector* args){
     Vec2 n2 = Implementation_Vec2Of(s,b);
     Vec2 res = Vec2_Div(n1,n2);
 
-    CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+    CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
     Scope_BuildInitVariableRange(s,name,"vec2",s->range,&res);
     return Token_Move(TOKEN_STRING,name);
 }
@@ -198,7 +198,7 @@ Token Vec2_Float_Handler_Mul(Scope* s,Token* op,Vector* args){
     Double n2 = Implementation_FloatOf(s,b);
     Vec2 res = Vec2_Mulf(n1,n2);
 
-    CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+    CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
     Scope_BuildInitVariableRange(s,name,"vec2",s->range,&res);
     return Token_Move(TOKEN_STRING,name);
 }
@@ -212,7 +212,7 @@ Token Vec2_Float_Handler_Div(Scope* s,Token* op,Vector* args){
     Double n2 = Implementation_FloatOf(s,b);
     Vec2 res = Vec2_Divf(n1,n2);
 
-    CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+    CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
     Scope_BuildInitVariableRange(s,name,"vec2",s->range,&res);
     return Token_Move(TOKEN_STRING,name);
 }
@@ -225,7 +225,7 @@ Token Vec2_Vec2_Handler_Neg(Scope* s,Token* op,Vector* args){
     Vec2 n1 = Implementation_Vec2Of(s,a);
     Vec2 res = Vec2_Neg(n1);
 
-    CStr name = Enviroment_Variablename_Next((Enviroment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
+    CStr name = Environment_Variablename_Next((Environment*)s,LUALIKE_STACK,sizeof(LUALIKE_STACK) - 1);
     Scope_BuildInitVariableRange(s,name,"vec2",s->range,&res);
     return Token_Move(TOKEN_STRING,name);
 }
@@ -423,9 +423,8 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
     );
 
     ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("new",NULL,(Member[]){ 
-        Member_New("str","name"),
-        Member_New("int","width"),
-        Member_New("int","height"),
+        Member_New("float","x"),
+        Member_New("float","y"),
         MEMBER_END
     },(void*)Vec2_Function_Make));
     ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("dot","float",(Member[]){ 

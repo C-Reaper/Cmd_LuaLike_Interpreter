@@ -1,6 +1,6 @@
 #include "/home/codeleaded/System/Static/Library/AlxCallStack.h"
 #include "/home/codeleaded/System/Static/Library/AlxExternFunctions.h"
-#include "/home/codeleaded/System/Static/Library/AlxEnviroment.h"
+#include "/home/codeleaded/System/Static/Library/AlxEnvironment.h"
 #include "/home/codeleaded/System/Static/Library/LuaLikeDefines.h"
 #include "/home/codeleaded/System/Static/Library/Pointer.h"
 #include "/home/codeleaded/System/Static/Library/Karol.h"
