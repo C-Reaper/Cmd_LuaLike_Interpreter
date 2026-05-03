@@ -414,7 +414,7 @@ Variable Window_String(Scope* sc,CStr name,Variable* args){
         Double x = *(Double*)Variable_Data(x_var);
         Double y = *(Double*)Variable_Data(y_var);
         Pixel p = (Pixel)(*(Number*)Variable_Data(p_var));
-        CStr_RenderAlxFont(alxw->Buffer,alxw->Width,alxw->Height,&alxw->AlxFont,s,x,y,p);
+        CStr_RenderAlxFont(alxw->Buffer,alxw->Width,alxw->Height,&alxw->font,s,x,y,p);
     }
 
     return Variable_Null();
