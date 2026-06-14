@@ -26,11 +26,11 @@ Token Obj_Obj_Handler_Ass(Scope* s,Token* op,Vector* args){
     if(b->tt==TOKEN_STRING){
         b_var = Scope_FindVariable(s,b->str);
         if(!b_var){
-            printf("[Obj_Ass]: 1. Arg: Variable %s doesn't exist!\n",a->str);
+            s->Error(s,"[Obj_Ass]: 2. Arg: Variable %s doesn't exist!\n",b->str);
             return Token_Null();
         }
     }else{
-        printf("[Obj_Ass]: 1. Arg: %s is not a Obj type!\n",a->str);
+        s->Error(s,"[Obj_Ass]: 2. Arg: %s is not a Obj type!\n",b->str);
         return Token_Null();
     }
     
@@ -45,7 +45,7 @@ Token Obj_Obj_Handler_Ass(Scope* s,Token* op,Vector* args){
 
         Variable_Set(a_var,b_var);
     }else{
-        printf("[Obj_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
+        s->Error(s,"[Obj_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
@@ -62,7 +62,7 @@ Token Obj_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var)){
-                printf("[Obj_Acs]: 1. Arg: %s is not a init obj type!\n",a->str);
+                s->Error(s,"[Obj_Acs]: 1. Arg: %s is not a init obj type!\n",a->str);
                 return Token_Null();
             }else{
                 VariableMap* members = Variable_Data(a_var);
@@ -90,11 +90,11 @@ Token Obj_Any_Handler_Acs(Scope* s,Token* op,Vector* args){
                 Scope_BuildRefVariableRange(s,name,member->typename,s->range,member);
             }
         }else{
-            printf("[Obj_Ass]: 1. Arg: %s is not a variable!\n",a->str);
+            s->Error(s,"[Obj_Ass]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[Obj_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
+        s->Error(s,"[Obj_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 

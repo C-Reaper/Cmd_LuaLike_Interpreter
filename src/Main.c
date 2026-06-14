@@ -121,10 +121,6 @@ Variable Human_human(Environment* ev,CStr name,Variable* args){
 */
 
 int main(int argc,char** argv){
-    if(argc<=1){
-        printf("Missing File .ll!\n");
-        return 1;
-    }
 
     //LuaLike_CreateType_Std(&ll,"human",sizeof(Human),Human_Handler_Cast,Human_Human_Handler_Ass,Human_Destroyer,Human_Cpyer);
     //LuaLike_CreateFunc_Std(&ll,"C","humannew",NULL,(Member[]){ MEMBER_END },(void*)Human_human);
@@ -140,7 +136,7 @@ int main(int argc,char** argv){
     
     //LuaLike_Print(&ll);
 
-    LuaLike ll = LuaLike_New(argv[1],"./bin");
+    LuaLike ll = LuaLike_New("./code/Script.ll","./bin");
     Variable ret = LuaLike_Function(&ll,"main",(Variable[]){ 
         VARIABLE_END
     });

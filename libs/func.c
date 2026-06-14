@@ -11,7 +11,7 @@ Functype Implementation_FuncOf(Scope* s,Token* a){
     
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
-        if(a_var){
+        if(a_var && a_var->data){
             n = *(Functype*)Variable_Data(a_var);
         }else{
             printf("[Func_Of]: 1. Arg: Variable %s doesn't exist!\n",a->str);

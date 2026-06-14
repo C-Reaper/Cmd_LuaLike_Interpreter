@@ -11,6 +11,8 @@ function add(a,b)
 end
 
 function main()
-    --return fib(7)
+    return add(1,add(1,2))
+    
+    --return fib(9)
     return add(add(add(1,2),add(3,4)),add(add(5,6),add(7,8)))
 end

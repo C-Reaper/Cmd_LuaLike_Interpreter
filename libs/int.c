@@ -7,17 +7,17 @@ Number Implementation_IntOf(Scope* s,Token* a){
     Number n = NUMBER_PARSE_ERROR;
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
-        if(a_var){
+        if(a_var && a_var->data){
             n = *(Number*)Variable_Data(a_var);
         }else{
-            printf("[Int_Number]: 1. Arg: Variable %s doesn't exist!\n",a->str);
+            s->Error(s,"[Int_Number]: 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else if(a->tt==TOKEN_NUMBER){
-        n = Number_Parse(a->str);
+        n = a->v_i64;
     }else if(a->tt==TOKEN_FLOAT){
-        n = (Number)Double_Parse(a->str,1);
+        n = (Number)a->v_f64;
     }else{
-        printf("[Int_Number]: 1. Arg: %s is not a int type!\n",a->str);
+        s->Error(s,"[Int_Number]: 1. Arg: %s is not a int type!\n",a->str);
     }
     return n;
 }
@@ -25,8 +25,12 @@ Number Implementation_IntOf(Scope* s,Token* a){
 Token Int_Int_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
-
-    //printf("(int,int) ASS: %s = %s\n",a->str,b->str);
+    
+    printf("(int,int) ASS: ");
+    Token_Print_V(a);
+    printf(" = ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n2 = Implementation_IntOf(s,b);
     
@@ -39,151 +43,170 @@ Token Int_Int_Handler_Ass(Scope* s,Token* op,Vector* args){
             Scope_BuildInitVariableRange(s,a->str,"int",s->range-1,(Number[]){ n2 });
         }
     }else{
-        printf("[Int_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
+        s->Error(s,"[Int_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
     }
 
-    Number res = n2;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,n2);
 }
 Token Int_Int_Handler_Add(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("ADD: %s + %s\n",a->str,b->str);
+    printf("(int,int) ADD: ");
+    Token_Print_V(a);
+    printf(" + ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
     Number res = n1 + n2;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Int_Int_Handler_Sub(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("SUB: %s - %s\n",a->str,b->str);
+    printf("(int,int) SUB: ");
+    Token_Print_V(a);
+    printf(" - ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
     Number res = n1 - n2;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Int_Int_Handler_Mul(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("MUL: %s * %s\n",a->str,b->str);
+     printf("(int,int) MUL: ");
+    Token_Print_V(a);
+    printf(" * ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
     Number res = n1 * n2;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Int_Int_Handler_Div(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("DIV: %s / %s\n",a->str,b->str);
+    printf("(int,int) DIV: ");
+    Token_Print_V(a);
+    printf(" / ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
 
     Number res = 0;
-    if(n2!=0) res = n1 / n2;
+    if(n2!=0)
+        res = n1 / n2;
     else{
-        printf("[Environment]: Error: DIV by Zero\n");
+        s->Error(s,"[Environment]: Error: DIV by Zero\n");
     }
 
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Int_Int_Handler_Neg(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
-    //printf("NEG: -%s\n",a->str);
+    printf("(int) NEG: -");
+    Token_Print_V(a);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number res = -n1;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Int_Int_Handler_Equ(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("EQU: %s == %s\n",a->str,b->str);
+    printf("(int,int) EQU: ");
+    Token_Print_V(a);
+    printf(" == ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
     Boolean res = n1 == n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Int_Int_Handler_Les(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("LES: %s < %s\n",a->str,b->str);
+    printf("(int,int) LES: ");
+    Token_Print_V(a);
+    printf(" < ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
     Boolean res = n1 < n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Int_Int_Handler_Grt(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("GRT: %s > %s\n",a->str,b->str);
+    printf("(int,int) GRT: ");
+    Token_Print_V(a);
+    printf(" > ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
     Boolean res = n1 > n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Int_Int_Handler_Leq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("LEQ: %s <= %s\n",a->str,b->str);
+    printf("(int,int) LEQ: ");
+    Token_Print_V(a);
+    printf(" <= ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
     Boolean res = n1 <= n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Int_Int_Handler_Grq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    //printf("GRQ: %s >= %s\n",a->str,b->str);
+    printf("(int,int) GRQ: ");
+    Token_Print_V(a);
+    printf(" >= ");
+    Token_Print_V(b);
+    printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
     Boolean res = n1 >= n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Int_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
-    //printf("CAST: %s\n",a->str);
+    //printf("(int) CAST: ()");
+    //Token_Print_V(a);
+    //printf("\n");
 
     Number res = Implementation_IntOf(s,a);
     char* resstr = Number_Get(res);

@@ -10,14 +10,14 @@ Number Implementation_SmallOf(Scope* s,Token* a){
     Number n = NUMBER_PARSE_ERROR;
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
-        if(a_var){
+        if(a_var && a_var->data){
             if(CStr_Cmp(a_var->typename,"small"))   n = *(Small*)Variable_Data(a_var);
             if(CStr_Cmp(a_var->typename,"int"))     n = *(Number*)Variable_Data(a_var);
         }else{
             printf("[Small_Number]: 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else if(a->tt==TOKEN_NUMBER){
-        n = Number_Parse(a->str);
+        n = a->v_i64;
     }else{
         printf("[Small_Number]: 1. Arg: %s is not a small type!\n",a->str);
     }
@@ -44,10 +44,7 @@ Token Small_Small_Handler_Ass(Scope* s,Token* op,Vector* args){
         printf("[Small_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
     }
 
-    Number res = n2;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,n2);
 }
 Token Small_Small_Handler_Add(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -58,9 +55,7 @@ Token Small_Small_Handler_Add(Scope* s,Token* op,Vector* args){
     Number n1 = Implementation_SmallOf(s,a);
     Number n2 = Implementation_SmallOf(s,b);
     Number res = n1 + n2;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Small_Small_Handler_Sub(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -71,9 +66,7 @@ Token Small_Small_Handler_Sub(Scope* s,Token* op,Vector* args){
     Number n1 = Implementation_SmallOf(s,a);
     Number n2 = Implementation_SmallOf(s,b);
     Number res = n1 - n2;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Small_Small_Handler_Mul(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -84,9 +77,7 @@ Token Small_Small_Handler_Mul(Scope* s,Token* op,Vector* args){
     Number n1 = Implementation_SmallOf(s,a);
     Number n2 = Implementation_SmallOf(s,b);
     Number res = n1 * n2;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Small_Small_Handler_Div(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -98,13 +89,13 @@ Token Small_Small_Handler_Div(Scope* s,Token* op,Vector* args){
     Number n2 = Implementation_SmallOf(s,b);
 
     Number res = 0;
-    if(n2!=0) res = n1 / n2;
+    if(n2!=0)
+        res = n1 / n2;
     else{
         printf("[Environment]: Error: DIV by Zero\n");
     }
 
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Small_Small_Handler_Neg(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -113,9 +104,7 @@ Token Small_Small_Handler_Neg(Scope* s,Token* op,Vector* args){
 
     Number n1 = Implementation_SmallOf(s,a);
     Number res = -n1;
-
-    char* resstr = Number_Get(res);
-    return Token_Move(TOKEN_NUMBER,resstr);
+    return Token_New_I64(TOKEN_NUMBER,res);
 }
 Token Small_Small_Handler_Equ(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -126,9 +115,7 @@ Token Small_Small_Handler_Equ(Scope* s,Token* op,Vector* args){
     Number n1 = Implementation_SmallOf(s,a);
     Number n2 = Implementation_SmallOf(s,b);
     Boolean res = n1 == n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Small_Small_Handler_Les(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -139,9 +126,7 @@ Token Small_Small_Handler_Les(Scope* s,Token* op,Vector* args){
     Number n1 = Implementation_SmallOf(s,a);
     Number n2 = Implementation_SmallOf(s,b);
     Boolean res = n1 < n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Small_Small_Handler_Grt(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -152,9 +137,7 @@ Token Small_Small_Handler_Grt(Scope* s,Token* op,Vector* args){
     Number n1 = Implementation_SmallOf(s,a);
     Number n2 = Implementation_SmallOf(s,b);
     Boolean res = n1 > n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Small_Small_Handler_Leq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -165,9 +148,7 @@ Token Small_Small_Handler_Leq(Scope* s,Token* op,Vector* args){
     Number n1 = Implementation_SmallOf(s,a);
     Number n2 = Implementation_SmallOf(s,b);
     Boolean res = n1 <= n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Small_Small_Handler_Grq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -178,9 +159,7 @@ Token Small_Small_Handler_Grq(Scope* s,Token* op,Vector* args){
     Number n1 = Implementation_SmallOf(s,a);
     Number n2 = Implementation_SmallOf(s,b);
     Boolean res = n1 >= n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Small_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);

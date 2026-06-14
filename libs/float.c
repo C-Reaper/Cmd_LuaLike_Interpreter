@@ -8,17 +8,19 @@ Double Implementation_FloatOf(Scope* s,Token* a){
     
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
-        if(a_var){
+        if(a_var && a_var->data){
             n = *(Double*)Variable_Data(a_var);
         }else{
-            printf("[Float]: Impl -> 1. Arg: Variable %s doesn't exist!\n",a->str);
+            s->Error(s,"[Float]: Impl -> 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else if(a->tt==TOKEN_FLOAT){
-        n = Double_Parse(a->str,1);
+        n = a->v_f64;
     }else if(a->tt==TOKEN_NUMBER){
-        n = (Double)Number_Parse(a->str);
+        n = a->v_i64;
+    }else if(a->tt==TOKEN_BOOL){
+        n = a->v_b1;
     }else{
-        printf("[Float]: Impl -> 1. Arg: %s is not a float type!\n",a->str);
+        s->Error(s,"[Float]: Impl -> 1. Arg: %s is not a float type!\n",a->str);
     }
     return n;
 }
@@ -41,13 +43,10 @@ Token Float_Float_Handler_Ass(Scope* s,Token* op,Vector* args){
             //printf("[Float_Ass]: 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else{
-        printf("[Float_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
+        s->Error(s,"[Float_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
     }
 
-    Double res = n2;
-
-    char* resstr = Double_Get(res,6);
-    return Token_Move(TOKEN_FLOAT,resstr);
+    return Token_New_F64(TOKEN_FLOAT,n2);
 }
 Token Float_Float_Handler_Add(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -58,9 +57,7 @@ Token Float_Float_Handler_Add(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
     Double res = n1 + n2;
-
-    char* resstr = Double_Get(res,6);
-    return Token_Move(TOKEN_FLOAT,resstr);
+    return Token_New_F64(TOKEN_FLOAT,res);
 }
 Token Float_Float_Handler_Sub(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -71,9 +68,7 @@ Token Float_Float_Handler_Sub(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
     Double res = n1 - n2;
-
-    char* resstr = Double_Get(res,6);
-    return Token_Move(TOKEN_FLOAT,resstr);
+    return Token_New_F64(TOKEN_FLOAT,res);
 }
 Token Float_Float_Handler_Mul(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -84,9 +79,7 @@ Token Float_Float_Handler_Mul(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
     Double res = n1 * n2;
-
-    char* resstr = Double_Get(res,6);
-    return Token_Move(TOKEN_FLOAT,resstr);
+    return Token_New_F64(TOKEN_FLOAT,res);
 }
 Token Float_Float_Handler_Div(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -98,13 +91,13 @@ Token Float_Float_Handler_Div(Scope* s,Token* op,Vector* args){
     Double n2 = Implementation_FloatOf(s,b);
 
     Double res = 0.0;
-    if(n2!=0.0) res = n1 / n2;
+    if(n2!=0.0)
+        res = n1 / n2;
     else{
-        printf("[Environment]: Error: DIV by Zero\n");
+        s->Error(s,"[Float]: Float_Handler -> DIV by Zero\n");
     }
 
-    char* resstr = Double_Get(res,6);
-    return Token_Move(TOKEN_FLOAT,resstr);
+    return Token_New_F64(TOKEN_FLOAT,res);
 }
 Token Float_Float_Handler_Neg(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -113,9 +106,7 @@ Token Float_Float_Handler_Neg(Scope* s,Token* op,Vector* args){
 
     Double n1 = Implementation_FloatOf(s,a);
     Double res = -n1;
-
-    char* resstr = Double_Get(res,6);
-    return Token_Move(TOKEN_FLOAT,resstr);
+    return Token_New_F64(TOKEN_FLOAT,res);
 }
 Token Float_Float_Handler_Equ(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -126,9 +117,7 @@ Token Float_Float_Handler_Equ(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
     Boolean res = n1 == n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Float_Float_Handler_Les(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -139,9 +128,7 @@ Token Float_Float_Handler_Les(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
     Boolean res = n1 < n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Float_Float_Handler_Grt(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -152,9 +139,7 @@ Token Float_Float_Handler_Grt(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
     Boolean res = n1 > n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Float_Float_Handler_Leq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -165,9 +150,7 @@ Token Float_Float_Handler_Leq(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
     Boolean res = n1 <= n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Float_Float_Handler_Grq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -178,18 +161,11 @@ Token Float_Float_Handler_Grq(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
     Boolean res = n1 >= n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Float_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
-
-    //printf("CAST: %s\n",a->str);
-
-    Double n1 = Implementation_FloatOf(s,a);
-    
-    Double res = n1;
+    Double res = Implementation_FloatOf(s,a);
     char* resstr = Double_Get(res,6);
     return Token_Move(TOKEN_CONSTSTRING_DOUBLE,resstr);
 }

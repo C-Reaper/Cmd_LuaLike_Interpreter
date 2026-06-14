@@ -10,14 +10,14 @@ Boolean Implementation_BooleanOf(Scope* s,Token* a){
         if(a_var){
             n = *(Boolean*)Variable_Data(a_var);
         }else{
-            printf("[Boolean]: Impl -> 1. Arg: Variable %s doesn't exist!\n",a->str);
+            s->Error(s,"[Boolean]: Impl -> 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else if(a->tt==TOKEN_BOOL){
-        n = Boolean_Parse(a->str);
+        n = a->v_b1;
     }else if(a->tt == TOKEN_NUMBER){
-        n = Number_Parse(a->str) != 0;
+        n = a->v_i64;
     }else{
-        printf("[Boolean]: Impl -> 1. Arg: %s is not a bool type!\n",a->str);
+        s->Error(s,"[Boolean]: Impl -> 1. Arg: %s is not a bool type!\n",a->str);
     }
     return n;
 }
@@ -35,12 +35,16 @@ Token Boolean_Boolean_Handler_Ass(Scope* s,Token* op,Vector* args){
         if(b_var){
             n2 = *(Boolean*)b_var->data;
         }else{
-            printf("[Boolean_Ass]: 2. Arg: Variable %s doesn't exist!\n",b->str);
+            s->Error(s,"[Boolean_Ass]: 2. Arg: Variable %s doesn't exist!\n",b->str);
         }
+    }else if(a->tt==TOKEN_FLOAT){
+        n2 = (Boolean)a->v_f64;
+    }else if(a->tt==TOKEN_NUMBER){
+        n2 = (Boolean)a->v_i64;
     }else if(b->tt==TOKEN_BOOL){
-        n2 = Boolean_Parse(b->str);
+        n2 = a->v_b1;
     }else{
-        printf("[Boolean_Ass]: 2. Arg: %s is not a bool type!\n",b->str);
+        s->Error(s,"[Boolean_Ass]: 2. Arg: %s is not a bool type!\n",b->str);
     }
     
     if(a->tt==TOKEN_STRING){
@@ -52,13 +56,10 @@ Token Boolean_Boolean_Handler_Ass(Scope* s,Token* op,Vector* args){
             Scope_BuildInitVariableRange(s,a->str,"bool",s->range-1,(Boolean[]){ n2 });
         }
     }else{
-        printf("[Boolean_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
+        s->Error(s,"[Boolean_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
     }
 
-    Boolean res = n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,n2);
 }
 Token Boolean_Boolean_Handler_Equ(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -69,9 +70,7 @@ Token Boolean_Boolean_Handler_Equ(Scope* s,Token* op,Vector* args){
     Boolean n1 = Implementation_BooleanOf(s,a);
     Boolean n2 = Implementation_BooleanOf(s,b);
     Boolean res = n1 == n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Boolean_Boolean_Handler_And(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -82,9 +81,7 @@ Token Boolean_Boolean_Handler_And(Scope* s,Token* op,Vector* args){
     Boolean n1 = Implementation_BooleanOf(s,a);
     Boolean n2 = Implementation_BooleanOf(s,b);
     Boolean res = n1 && n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Boolean_Boolean_Handler_Or(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -95,9 +92,7 @@ Token Boolean_Boolean_Handler_Or(Scope* s,Token* op,Vector* args){
     Boolean n1 = Implementation_BooleanOf(s,a);
     Boolean n2 = Implementation_BooleanOf(s,b);
     Boolean res = n1 || n2;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Boolean_Handler_Not(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
@@ -106,18 +101,12 @@ Token Boolean_Handler_Not(Scope* s,Token* op,Vector* args){
 
     Boolean n1 = Implementation_BooleanOf(s,a);
     Boolean res = !n1;
-
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_BOOL,resstr);
+    return Token_New_B1(TOKEN_BOOL,res);
 }
 Token Boolean_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
-
     Boolean n1 = Implementation_BooleanOf(s,a);
-    
-    Boolean res = n1;
-    char* resstr = Boolean_Get(res);
-    return Token_Move(TOKEN_CONSTSTRING_DOUBLE,resstr);
+    return Token_New_B1(TOKEN_BOOL,n1);
 }
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>

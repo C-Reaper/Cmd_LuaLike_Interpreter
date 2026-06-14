@@ -7,7 +7,7 @@ CStr Implementation_StrOf(Scope* s,Token* a){
     
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
-        if(a_var){
+        if(a_var && a_var->data){
             n = *(CStr*)Variable_Data(a_var);
         }else{
             printf("[Int_CStr]: 1. Arg: Variable %s doesn't exist!\n",a->str);

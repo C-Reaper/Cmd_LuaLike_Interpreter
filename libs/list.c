@@ -7,13 +7,13 @@ Number Implementation_IntOf(Scope* s,Token* a){
     Number n = NUMBER_PARSE_ERROR;
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
-        if(a_var){
+        if(a_var && a_var->data){
             n = *(Number*)Variable_Data(a_var);
         }else{
             printf("[Int_Number]: 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else if(a->tt==TOKEN_NUMBER){
-        n = Number_Parse(a->str);
+        n = a->v_i64;
     }
     return n;
 }
@@ -28,7 +28,7 @@ Boolean Implementation_BooleanOf(Scope* s,Token* a){
             printf("[Int_Boolean]: 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else if(a->tt==TOKEN_BOOL){
-        n = Boolean_Parse(a->str);
+        n = a->v_b1;
     }
     return n;
 }
@@ -43,7 +43,7 @@ Double Implementation_FloatOf(Scope* s,Token* a){
             printf("[Int_Double]: 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
     }else if(a->tt==TOKEN_FLOAT){
-        n = Double_Parse(a->str,1);
+        n = a->v_f64;
     }
     return n;
 }
