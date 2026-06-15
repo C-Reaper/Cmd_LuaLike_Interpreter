@@ -646,6 +646,34 @@ Variable Listtype_ToStr(Scope* sc,CStr name,Variable* args){
 
     return Variable_Null();
 }
+Variable Listtype_Contains(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    Variable* e_var = &args[1];
+    
+    if(!Variable_Data(a_var)){
+        printf("[Listtype]: ToStr -> %s is not a var!\n",a_var->name);
+    }else{
+        Listtype* members = (Listtype*)Variable_Data(a_var);
+        CStr e_str = *(CStr*)Variable_Data(a_var);
+        Variable* member = VariableMap_Find(members,e_str);
+        
+        if(member){
+            return Variable_Make(
+                "Contains","bool",(Boolean[]){ 1 },
+                sizeof(Boolean),sc->range - 1,
+                Scope_DestroyerOfType(sc,"bool"),
+                Scope_CpyerOfType(sc,"bool")
+            );
+        }
+    }
+
+    return Variable_Make(
+        "Contains","bool",(Boolean[]){ 0 },
+        sizeof(Boolean),sc->range - 1,
+        Scope_DestroyerOfType(sc,"bool"),
+        Scope_CpyerOfType(sc,"bool")
+    );
+}
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>
     TypeMap_PushContained(&s->types,funcs,
@@ -697,5 +725,9 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
         Member_New("list","l"),
         MEMBER_END
     },(void*)Listtype_ToStr));
-    
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("contains","bool",(Member[]){ 
+        Member_New("list","l"),
+        Member_New(NULL,"e"),
+        MEMBER_END
+    },(void*)Listtype_Contains));
 }

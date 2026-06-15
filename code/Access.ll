@@ -34,7 +34,8 @@ function main()
     --l.append("third")
     --l.append("fourth")
 
-    io::print(l.tostr())
+    --io::print(l.tostr())
+    --io::print(l.tostr())
 
     return l
 end
