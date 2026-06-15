@@ -29,6 +29,12 @@ function main()
     l += "first"
     l += "second"
 
+    if l.contains("first")
+        io::print("Is contained!")
+    else
+        io::print("Is not contained!")
+    end
+
     --l.append("third")
     --l.append("fourth")
     --l.append("third")
