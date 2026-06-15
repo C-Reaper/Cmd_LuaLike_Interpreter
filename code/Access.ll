@@ -1,6 +1,8 @@
+from io import *
 from list import *
 from obj import *
 
+/*
 class Human
     function new(name,age)
         m = obj::new("Human")
@@ -16,6 +18,7 @@ class Human
         return "hello from: " + self.name
     end
 end
+*/
 
 function main()
     --h = Human::new("Bro",18)
@@ -25,8 +28,13 @@ function main()
     l = list::new()
     l += "first"
     l += "second"
-    l.append("third")
-    l.append("fourth")
+
+    --l.append("third")
+    --l.append("fourth")
+    --l.append("third")
+    --l.append("fourth")
+
+    io::print(l.tostr())
 
     return l
 end

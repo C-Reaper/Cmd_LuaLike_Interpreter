@@ -619,15 +619,29 @@ Variable Listtype_Make(Scope* sc,CStr name,Variable* args){
     );
     return ret;
 }
-Variable Listtype_Append(Scope* sc,CStr name,Variable* args){
+Variable Listtype_ToStr(Scope* sc,CStr name,Variable* args){
     Variable* a_var = &args[0];
-    Variable* e_var = &args[1];
     
     if(!Variable_Data(a_var)){
-        printf("[Listtype]: Update -> %s is not init!\n",a_var->name);
+        printf("[Listtype]: ToStr -> %s is not a var!\n",a_var->name);
     }else{
         Listtype* lptr = (Listtype*)Variable_Data(a_var);
-        VariableMap_Push(lptr,(Variable[]){ Variable_Cpy(e_var) });
+        TokenMap tm = TokenMap_Make((Token[]){
+            Token_By(TOKEN_STRING,a_var->name),
+            Token_Null()
+        });
+        Token tstr = Listtype_Handler_Cast(sc,(Token[]){ Token_Move(TOKEN_CAST,NULL) },&tm);
+        TokenMap_Free(&tm);
+
+        Variable v = Variable_Make(
+            "ToStr","str",(CStr[]){ tstr.str },
+            sizeof(CStr),sc->range - 1,
+            Scope_DestroyerOfType(sc,"str"),
+            Scope_CpyerOfType(sc,"str")
+        );
+        tstr.str = NULL;
+        Token_Free(&tstr);
+        return v;
     }
 
     return Variable_Null();
@@ -679,10 +693,9 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
     ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("new",NULL,(Member[]){ 
         MEMBER_END 
     },(void*)Listtype_Make));
-    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("append",NULL,(Member[]){ 
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("tostr",NULL,(Member[]){ 
         Member_New("list","l"),
-        Member_New(NULL,"e"),
         MEMBER_END
-    },(void*)Listtype_Append));
+    },(void*)Listtype_ToStr));
     
 }

@@ -33,11 +33,11 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
         MEMBER_END 
     },(void*)io_input));
     ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("print",NULL,(Member[]){ 
-        Member_New(NULL,"s"),
+        Member_New("str","s"),
         MEMBER_END
     },(void*)io_print));
     ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("error",NULL,(Member[]){ 
-        Member_New(NULL,"s"),
+        Member_New("str","s"),
         MEMBER_END
     },(void*)io_error));
 }
