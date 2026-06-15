@@ -136,11 +136,17 @@ int main(int argc,char** argv){
     
     //LuaLike_Print(&ll);
 
-    LuaLike ll = LuaLike_New("./code/Script.ll","./bin");
+    LuaLike ll = LuaLike_New("./code/Access.ll","./bin");
+    
     Variable ret = LuaLike_Function(&ll,"main",(Variable[]){ 
         VARIABLE_END
     });
+
     LuaLike_PrintVariable(&ll,&ret);
+    Scope_Print_N(&ll.ev.sc);
+
+    //LuaLike_Print(&ll);
+    
     Variable_Free(&ret);
     LuaLike_Free(&ll);
 

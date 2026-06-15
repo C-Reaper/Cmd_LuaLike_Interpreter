@@ -26,11 +26,11 @@ Token Int_Int_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
     
-    printf("(int,int) ASS: ");
-    Token_Print_V(a);
-    printf(" = ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) ASS: ");
+    //Token_Print_V(a);
+    //printf(" = ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n2 = Implementation_IntOf(s,b);
     
@@ -52,11 +52,11 @@ Token Int_Int_Handler_Add(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("(int,int) ADD: ");
-    Token_Print_V(a);
-    printf(" + ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) ADD: ");
+    //Token_Print_V(a);
+    //printf(" + ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
@@ -67,11 +67,11 @@ Token Int_Int_Handler_Sub(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("(int,int) SUB: ");
-    Token_Print_V(a);
-    printf(" - ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) SUB: ");
+    //Token_Print_V(a);
+    //printf(" - ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
@@ -82,11 +82,11 @@ Token Int_Int_Handler_Mul(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-     printf("(int,int) MUL: ");
-    Token_Print_V(a);
-    printf(" * ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) MUL: ");
+    //Token_Print_V(a);
+    //printf(" * ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
@@ -97,11 +97,11 @@ Token Int_Int_Handler_Div(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("(int,int) DIV: ");
-    Token_Print_V(a);
-    printf(" / ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) DIV: ");
+    //Token_Print_V(a);
+    //printf(" / ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
@@ -118,9 +118,9 @@ Token Int_Int_Handler_Div(Scope* s,Token* op,Vector* args){
 Token Int_Int_Handler_Neg(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
-    printf("(int) NEG: -");
-    Token_Print_V(a);
-    printf("\n");
+    //printf("(int) NEG: -");
+    //Token_Print_V(a);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number res = -n1;
@@ -130,11 +130,11 @@ Token Int_Int_Handler_Equ(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("(int,int) EQU: ");
-    Token_Print_V(a);
-    printf(" == ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) EQU: ");
+    //Token_Print_V(a);
+    //printf(" == ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
@@ -145,11 +145,11 @@ Token Int_Int_Handler_Les(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("(int,int) LES: ");
-    Token_Print_V(a);
-    printf(" < ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) LES: ");
+    //Token_Print_V(a);
+    //printf(" < ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
@@ -160,11 +160,11 @@ Token Int_Int_Handler_Grt(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("(int,int) GRT: ");
-    Token_Print_V(a);
-    printf(" > ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) GRT: ");
+    //Token_Print_V(a);
+    //printf(" > ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
@@ -175,11 +175,11 @@ Token Int_Int_Handler_Leq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("(int,int) LEQ: ");
-    Token_Print_V(a);
-    printf(" <= ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) LEQ: ");
+    //Token_Print_V(a);
+    //printf(" <= ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);
@@ -190,11 +190,11 @@ Token Int_Int_Handler_Grq(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
-    printf("(int,int) GRQ: ");
-    Token_Print_V(a);
-    printf(" >= ");
-    Token_Print_V(b);
-    printf("\n");
+    //printf("(int,int) GRQ: ");
+    //Token_Print_V(a);
+    //printf(" >= ");
+    //Token_Print_V(b);
+    //printf("\n");
 
     Number n1 = Implementation_IntOf(s,a);
     Number n2 = Implementation_IntOf(s,b);

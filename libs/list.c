@@ -1,7 +1,6 @@
 #include "/home/codeleaded/System/Static/Library/AlxCallStack.h"
 #include "/home/codeleaded/System/Static/Library/AlxExternFunctions.h"
 #include "/home/codeleaded/System/Static/Library/LuaLikeDefines.h"
-//#include "/home/codeleaded/Hecke/C/Cmd_Scripter/src/LuaLike.h"
 
 Number Implementation_IntOf(Scope* s,Token* a){
     Number n = NUMBER_PARSE_ERROR;
@@ -66,18 +65,18 @@ CStr Implementation_StrOf(Scope* s,Token* a){
 
 typedef VariableMap Listtype;// Vector<Variable>
 
-void List_Destroyer(Variable* v){
-    //printf("List: Destroyer!\n");
+void Listtype_Destroyer(Variable* v){
+    //printf("Listtype: Destroyer!\n");
     VariableMap_Free(Variable_Data(v));
 }
-void List_Cpyer(Variable* src,Variable* dst){
-    printf("List: Cpyer!\n");
+void Listtype_Cpyer(Variable* src,Variable* dst){
+    printf("Listtype: Cpyer!\n");
     Listtype* src_str = (Listtype*)Variable_Data(src);
     Listtype* dst_str = (Listtype*)Variable_Data(dst);
     *dst_str = VariableMap_Cpy(src_str);
 }
 
-Token List_List_Handler_Ass(Scope* s,Token* op,Vector* args){
+Token Listtype_Listtype_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -87,11 +86,11 @@ Token List_List_Handler_Ass(Scope* s,Token* op,Vector* args){
     if(b->tt==TOKEN_STRING){
         b_var = Scope_FindVariable(s,b->str);
         if(!b_var){
-            printf("[List_Ass]: 1. Arg: Variable %s doesn't exist!\n",a->str);
+            printf("[Listtype_Ass]: 1. Arg: Variable %s doesn't exist!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Ass]: 1. Arg: %s is not a List type!\n",a->str);
+        printf("[Listtype_Ass]: 1. Arg: %s is not a Listtype type!\n",a->str);
         return Token_Null();
     }
     
@@ -106,14 +105,14 @@ Token List_List_Handler_Ass(Scope* s,Token* op,Vector* args){
 
         Variable_Set(a_var,b_var);
     }else{
-        printf("[List_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Ass]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
 
-Token List_Int_Handler_Asd(Scope* s,Token* op,Vector* args){
+Token Listtype_Int_Handler_Asd(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -125,27 +124,27 @@ Token List_Int_Handler_Asd(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(cn!=NUMBER_PARSE_ERROR){
                 VariableMap* members = Variable_Data(a_var);
                 VariableMap_PPush(members,(Variable[]){ Variable_Make("NL","int",(Number[]){ cn },sizeof(Number),-1,NULL,NULL) });
             }else{
-                printf("[List_Asd]: 2. Arg: %s is not a int!\n",b->str);
+                printf("[Listtype_Asd]: 2. Arg: %s is not a int!\n",b->str);
                 return Token_Null();
             }
         }else{
-            printf("[List_Asd]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asd]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
-Token List_Str_Handler_Asd(Scope* s,Token* op,Vector* args){
+Token Listtype_Str_Handler_Asd(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -157,30 +156,29 @@ Token List_Str_Handler_Asd(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(cs!=NULL){
                 VariableMap* members = Variable_Data(a_var);
                 VariableMap_PPush(members,(Variable[]){ 
-                    Variable_Make("NL","str",(CStr[]){ CStr_Cpy(cs) },
-                    sizeof(CStr),-1,Scope_DestroyerOfType(s,"str"),Scope_CpyerOfType(s,"str"))
+                    Variable_Make("NL","str",(CStr[]){ CStr_Cpy(cs) },sizeof(CStr),-1,Scope_DestroyerOfType(s,"str"),Scope_CpyerOfType(s,"str"))
                 });
             }else{
-                printf("[List_Asd]: 2. Arg: %s is not a str!\n",b->str);
+                printf("[Listtype_Asd]: 2. Arg: %s is not a str!\n",b->str);
                 return Token_Null();
             }
         }else{
-            printf("[List_Asd]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asd]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
-Token List_Boolean_Handler_Asd(Scope* s,Token* op,Vector* args){
+Token Listtype_Boolean_Handler_Asd(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -192,27 +190,27 @@ Token List_Boolean_Handler_Asd(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(cb){
                 VariableMap* members = Variable_Data(a_var);
                 VariableMap_PPush(members,(Variable[]){ Variable_Make("NL","Boolean",(Boolean[]){ cb },sizeof(Boolean),-1,NULL,NULL) });
             }else{
-                printf("[List_Asd]: 2. Arg: %s is not a Boolean!\n",b->str);
+                printf("[Listtype_Asd]: 2. Arg: %s is not a Boolean!\n",b->str);
                 return Token_Null();
             }
         }else{
-            printf("[List_Asd]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asd]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
-Token List_Float_Handler_Asd(Scope* s,Token* op,Vector* args){
+Token Listtype_Float_Handler_Asd(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -224,27 +222,27 @@ Token List_Float_Handler_Asd(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(cf!=DOUBLE_PARSE_ERROR){
                 VariableMap* members = Variable_Data(a_var);
                 VariableMap_PPush(members,(Variable[]){ Variable_Make("NL","float",(Double[]){ cf },sizeof(Double),-1,NULL,NULL) });
             }else{
-                printf("[List_Asd]: 2. Arg: %s is not a float!\n",b->str);
+                printf("[Listtype_Asd]: 2. Arg: %s is not a float!\n",b->str);
                 return Token_Null();
             }
         }else{
-            printf("[List_Asd]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asd]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
-Token List_Obj_Handler_Asd(Scope* s,Token* op,Vector* args){
+Token Listtype_Obj_Handler_Asd(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -254,14 +252,14 @@ Token List_Obj_Handler_Asd(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(b->tt==TOKEN_STRING){
                 VariableMap* members = Variable_Data(a_var);
                 Variable* b_var = Scope_FindVariable(s,b->str);
                 if(b_var){
                     if(!Variable_Data(b_var)){
-                        printf("[List_Asd]: 2. Arg: %s is not inited!\n",b->str);
+                        printf("[Listtype_Asd]: 2. Arg: %s is not inited!\n",b->str);
                         return Token_Null();
                     }else if(CStr_Cmp(b_var->typename,"obj")){
                         void (*Cpyer)(Variable*,Variable*) = Scope_CpyerOfType(s,b_var->typename);
@@ -271,29 +269,29 @@ Token List_Obj_Handler_Asd(Scope* s,Token* op,Vector* args){
 
                         VariableMap_PPush(members,&var);
                     }else{
-                        printf("[List_Asd]: 2. Arg: %s is from a not defined type!\n",b->str);
+                        printf("[Listtype_Asd]: 2. Arg: %s is from a not defined type!\n",b->str);
                         return Token_Null();
                     }
                 }else{
-                    printf("[List_Asd]: 2. Arg: %s is not a variable!\n",b->str);
+                    printf("[Listtype_Asd]: 2. Arg: %s is not a variable!\n",b->str);
                     return Token_Null();
                 }
             }else{
-                printf("[List_Asd]: 2. Arg: %s is not a obj!\n",a->str);
+                printf("[Listtype_Asd]: 2. Arg: %s is not a obj!\n",a->str);
                 return Token_Null();
             }
         }else{
-            printf("[List_Asd]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asd]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
-Token List_List_Handler_Asd(Scope* s,Token* op,Vector* args){
+Token Listtype_Listtype_Handler_Asd(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -303,14 +301,14 @@ Token List_List_Handler_Asd(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(b->tt==TOKEN_STRING){
                 VariableMap* members = Variable_Data(a_var);
                 Variable* b_var = Scope_FindVariable(s,b->str);
                 if(b_var){
                     if(!Variable_Data(b_var)){
-                        printf("[List_Asd]: 2. Arg: %s is not inited!\n",b->str);
+                        printf("[Listtype_Asd]: 2. Arg: %s is not inited!\n",b->str);
                         return Token_Null();
                     }else if(CStr_Cmp(b_var->typename,"list")){
                         void (*Cpyer)(Variable*,Variable*) = Scope_CpyerOfType(s,b_var->typename);
@@ -320,30 +318,30 @@ Token List_List_Handler_Asd(Scope* s,Token* op,Vector* args){
 
                         VariableMap_PPush(members,&var);
                     }else{
-                        printf("[List_Asd]: 2. Arg: %s is from a not defined type!\n",b->str);
+                        printf("[Listtype_Asd]: 2. Arg: %s is from a not defined type!\n",b->str);
                         return Token_Null();
                     }
                 }else{
-                    printf("[List_Asd]: 2. Arg: %s is not a variable!\n",b->str);
+                    printf("[Listtype_Asd]: 2. Arg: %s is not a variable!\n",b->str);
                     return Token_Null();
                 }
             }else{
-                printf("[List_Asd]: 2. Arg: %s is not a obj!\n",a->str);
+                printf("[Listtype_Asd]: 2. Arg: %s is not a obj!\n",a->str);
                 return Token_Null();
             }
         }else{
-            printf("[List_Asd]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asd]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
 
-Token List_Int_Handler_Asu(Scope* s,Token* op,Vector* args){
+Token Listtype_Int_Handler_Asu(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -356,7 +354,7 @@ Token List_Int_Handler_Asu(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(cn!=NUMBER_PARSE_ERROR){
                 VariableMap* members = Variable_Data(a_var);
@@ -365,22 +363,22 @@ Token List_Int_Handler_Asu(Scope* s,Token* op,Vector* args){
                     Variable_Free(var);
                     PVector_Remove(members,cn);
                 }else{
-                    printf("[List_Asu]: index %ld out of bounds!\n",cn);
+                    printf("[Listtype_Asu]: index %ld out of bounds!\n",cn);
                     return Token_Null();
                 }
             }
         }else{
-            printf("[List_Asu]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asu]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asu]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asu]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
-Token List_Str_Handler_Asu(Scope* s,Token* op,Vector* args){
+Token Listtype_Str_Handler_Asu(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -392,28 +390,28 @@ Token List_Str_Handler_Asu(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(cs!=NULL){
                 VariableMap* members = Variable_Data(a_var);
                 VariableMap_Remove(members,cs);
             }else{
-                printf("[List_Asu]: 2. Arg: %s is not a str!\n",b->str);
+                printf("[Listtype_Asu]: 2. Arg: %s is not a str!\n",b->str);
                 return Token_Null();
             }
         }else{
-            printf("[List_Asu]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asu]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asu]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asu]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
 
-Token List_Str_Handler_Asm(Scope* s,Token* op,Vector* args){
+Token Listtype_Str_Handler_Asm(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -425,7 +423,7 @@ Token List_Str_Handler_Asm(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Acs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Acs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else if(cs!=NULL){
                 VariableMap* members = Variable_Data(a_var);
@@ -434,22 +432,22 @@ Token List_Str_Handler_Asm(Scope* s,Token* op,Vector* args){
                     sizeof(CStr),-1,Scope_DestroyerOfType(s,"str"),Scope_CpyerOfType(s,"str"))
                 });
             }else{
-                printf("[List_Asd]: 2. Arg: %s is not a str!\n",b->str);
+                printf("[Listtype_Asd]: 2. Arg: %s is not a str!\n",b->str);
                 return Token_Null();
             }
         }else{
-            printf("[List_Asd]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Asd]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Asd]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Null();
 }
 
-Token List_Int_Handler_Subs(Scope* s,Token* op,Vector* args){
+Token Listtype_Int_Handler_Subs(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -462,7 +460,7 @@ Token List_Int_Handler_Subs(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Subs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Subs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else{
                 VariableMap* members = Variable_Data(a_var);
@@ -486,22 +484,22 @@ Token List_Int_Handler_Subs(Scope* s,Token* op,Vector* args){
 
                     Scope_BuildRefVariableRange(s,name,member->typename,s->range+1,member);
                 }else{
-                    printf("[List_Subs]: in list %s index %ld is out of bounds!\n",a_var->name,n2);
+                    printf("[Listtype_Subs]: in list %s index %ld is out of bounds!\n",a_var->name,n2);
                     return Token_Null();
                 }
             }
         }else{
-            printf("[List_Subs]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Subs]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Subs]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Subs]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Move(TOKEN_STRING,name);
 }
-Token List_Str_Handler_Subs(Scope* s,Token* op,Vector* args){
+Token Listtype_Str_Handler_Subs(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
     Token* b = (Token*)Vector_Get(args,1);
 
@@ -514,7 +512,7 @@ Token List_Str_Handler_Subs(Scope* s,Token* op,Vector* args){
         Variable* a_var = Scope_FindVariable(s,a->str);
         if(a_var){
             if(!Variable_Data(a_var) || !CStr_Cmp(a_var->typename,"list")){
-                printf("[List_Subs]: 1. Arg: %s is not a list type!\n",a->str);
+                printf("[Listtype_Subs]: 1. Arg: %s is not a list type!\n",a->str);
                 return Token_Null();
             }else{
                 VariableMap* members = Variable_Data(a_var);
@@ -537,22 +535,22 @@ Token List_Str_Handler_Subs(Scope* s,Token* op,Vector* args){
 
                     Scope_BuildRefVariableRange(s,name,member->typename,s->range+1,member);
                 }else{
-                    printf("[List_Subs]: in list %s field \"%s\" doesn't exist!\n",a_var->name,n2);
+                    printf("[Listtype_Subs]: in list %s field \"%s\" doesn't exist!\n",a_var->name,n2);
                     return Token_Null();
                 }
             }
         }else{
-            printf("[List_Subs]: 1. Arg: %s is not a variable!\n",a->str);
+            printf("[Listtype_Subs]: 1. Arg: %s is not a variable!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Subs]: 1. Arg: %s is not a variable type!\n",a->str);
+        printf("[Listtype_Subs]: 1. Arg: %s is not a variable type!\n",a->str);
         return Token_Null();
     }
 
     return Token_Move(TOKEN_STRING,name);
 }
-Token List_Handler_Cast(Scope* s,Token* op,Vector* args){
+Token Listtype_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
     //printf("CAST: %s\n",a->str);
@@ -561,11 +559,11 @@ Token List_Handler_Cast(Scope* s,Token* op,Vector* args){
     if(a->tt==TOKEN_STRING){
         a_var = Scope_FindVariable(s,a->str);
         if(!a_var){
-            printf("[List_Ass]: 1. Arg: Variable %s doesn't exist!\n",a->str);
+            printf("[Listtype_Ass]: 1. Arg: Variable %s doesn't exist!\n",a->str);
             return Token_Null();
         }
     }else{
-        printf("[List_Ass]: 1. Arg: %s is not a List type!\n",a->str);
+        printf("[Listtype_Ass]: 1. Arg: %s is not a Listtype type!\n",a->str);
         return Token_Null();
     }
 
@@ -599,7 +597,7 @@ Token List_Handler_Cast(Scope* s,Token* op,Vector* args){
     String_Free(&builder);
     return Token_Move(TOKEN_CONSTSTRING_DOUBLE,resstr);
 }
-Token List_Handler_Destroy(Scope* s,Token* op,Vector* args){
+Token Listtype_Handler_Destroy(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
     printf("DESTROY: %s\n",a->str);
@@ -612,60 +610,79 @@ Token List_Handler_Destroy(Scope* s,Token* op,Vector* args){
     return Token_Null();
 }
 
-Variable List_Make(Scope* sc,CStr name,Variable* args){
+Variable Listtype_Make(Scope* sc,CStr name,Variable* args){
     Variable ret = Variable_Make(
         "Listtype","list",(VariableMap[]){ VariableMap_New() },
-        sizeof(VariableMap),sc->range-1,
+        sizeof(VariableMap),sc->range - 1,
         Scope_DestroyerOfType(sc,"list"),
         Scope_CpyerOfType(sc,"list")
     );
     return ret;
+}
+Variable Listtype_Append(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    Variable* e_var = &args[1];
+    
+    if(!Variable_Data(a_var)){
+        printf("[Listtype]: Update -> %s is not init!\n",a_var->name);
+    }else{
+        Listtype* lptr = (Listtype*)Variable_Data(a_var);
+        VariableMap_Push(lptr,(Variable[]){ Variable_Cpy(e_var) });
+    }
+
+    return Variable_Null();
 }
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>
     TypeMap_PushContained(&s->types,funcs,
         Type_New("list",sizeof(Listtype),OperatorInterationMap_Make((OperatorInterater[]){
             OperatorInterater_Make((CStr[]){ NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_CAST,(Token(*)(void*,Token*,Vector*))List_Handler_Cast),
+                OperatorDefiner_New(TOKEN_CAST,(Token(*)(void*,Token*,Vector*))Listtype_Handler_Cast),
                 OperatorDefiner_New(TOKEN_INIT,NULL),
                 OperatorDefiner_New(TOKEN_DESTROY,NULL),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "list",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASS,(Token(*)(void*,Token*,Vector*))List_List_Handler_Ass),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_List_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASS,(Token(*)(void*,Token*,Vector*))Listtype_Listtype_Handler_Ass),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))Listtype_Listtype_Handler_Asd),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "int",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_SUBS,(Token(*)(void*,Token*,Vector*))List_Int_Handler_Subs),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Int_Handler_Asd),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASU,(Token(*)(void*,Token*,Vector*))List_Int_Handler_Asu),
+                OperatorDefiner_New(TOKEN_LUALIKE_SUBS,(Token(*)(void*,Token*,Vector*))Listtype_Int_Handler_Subs),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))Listtype_Int_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASU,(Token(*)(void*,Token*,Vector*))Listtype_Int_Handler_Asu),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "str",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_SUBS,(Token(*)(void*,Token*,Vector*))List_Str_Handler_Subs),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Str_Handler_Asd),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASU,(Token(*)(void*,Token*,Vector*))List_Str_Handler_Asu),
-                OperatorDefiner_New(TOKEN_LUALIKE_ASM,(Token(*)(void*,Token*,Vector*))List_Str_Handler_Asm),
+                OperatorDefiner_New(TOKEN_LUALIKE_SUBS,(Token(*)(void*,Token*,Vector*))Listtype_Str_Handler_Subs),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))Listtype_Str_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASU,(Token(*)(void*,Token*,Vector*))Listtype_Str_Handler_Asu),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASM,(Token(*)(void*,Token*,Vector*))Listtype_Str_Handler_Asm),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "Boolean",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Boolean_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))Listtype_Boolean_Handler_Asd),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "float",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Float_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))Listtype_Float_Handler_Asd),
                 OPERATORDEFINER_END
             })),
             OperatorInterater_Make((CStr[]){ "obj",NULL },OperatorDefineMap_Make((OperatorDefiner[]){
-                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))List_Obj_Handler_Asd),
+                OperatorDefiner_New(TOKEN_LUALIKE_ASD,(Token(*)(void*,Token*,Vector*))Listtype_Obj_Handler_Asd),
                 OPERATORDEFINER_END
             })),
             OPERATORINTERATER_END
-        }),List_Destroyer,List_Cpyer)
+        }),Listtype_Destroyer,Listtype_Cpyer)
     );
 
     ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("new",NULL,(Member[]){ 
         MEMBER_END 
-    },(void*)List_Make));
+    },(void*)Listtype_Make));
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("append",NULL,(Member[]){ 
+        Member_New("list","l"),
+        Member_New(NULL,"e"),
+        MEMBER_END
+    },(void*)Listtype_Append));
+    
 }

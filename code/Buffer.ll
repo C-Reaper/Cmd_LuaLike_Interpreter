@@ -63,7 +63,7 @@ class implementation
 */
 
 function stream()
-    self = object()
+    self = obj::new("stream")
     self.a = 0
     self.b = 0
     return self

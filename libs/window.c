@@ -422,7 +422,7 @@ Variable Window_String(Scope* sc,CStr name,Variable* args){
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>
     TypeMap_PushContained(&s->types,funcs,
-        Type_New("window",sizeof(AlxWindow),OperatorInterationMap_Make((OperatorInterater[]){
+        Type_New("window",sizeof(WindowPtr),OperatorInterationMap_Make((OperatorInterater[]){
             OperatorInterater_Make((CStr[]){ NULL },OperatorDefineMap_Make((OperatorDefiner[]){
                 OperatorDefiner_New(TOKEN_CAST,(Token(*)(void*,Token*,Vector*))Window_Handler_Cast),
                 OperatorDefiner_New(TOKEN_INIT,NULL),
