@@ -30,9 +30,9 @@ Token Float_Float_Handler_Ass(Scope* s,Token* op,Vector* args){
     Token* b = (Token*)Vector_Get(args,1);
 
     Double n2 = Implementation_FloatOf(s,b);
-    printf("ASS: ");
-    if(a->tt == TOKEN_STRING) printf("%s\n",a->str);
-    printf(" = %lf\n",n2);
+    //printf("ASS: ");
+    //if(a->tt == TOKEN_STRING) printf("%s\n",a->str);
+    //printf(" = %lf\n",n2);
     
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
@@ -56,7 +56,7 @@ Token Float_Float_Handler_Add(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
 
-    printf("ADD: %lf + %lf\n",n1,n2);
+    //printf("ADD: %lf + %lf\n",n1,n2);
     Double res = n1 + n2;
     return Token_New_F64(TOKEN_FLOAT,res);
 }
@@ -67,7 +67,7 @@ Token Float_Float_Handler_Sub(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
 
-    printf("SUB: %lf - %lf\n",n1,n2);
+    //printf("SUB: %lf - %lf\n",n1,n2);
     Double res = n1 - n2;
     return Token_New_F64(TOKEN_FLOAT,res);
 }
@@ -78,7 +78,7 @@ Token Float_Float_Handler_Mul(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
 
-    printf("MUL: %lf * %lf\n",n1,n2);
+    //printf("MUL: %lf * %lf\n",n1,n2);
     Double res = n1 * n2;
     return Token_New_F64(TOKEN_FLOAT,res);
 }
@@ -89,7 +89,7 @@ Token Float_Float_Handler_Div(Scope* s,Token* op,Vector* args){
     Double n1 = Implementation_FloatOf(s,a);
     Double n2 = Implementation_FloatOf(s,b);
 
-    printf("DIV: %lf / %lf\n",n1,n2);
+    //printf("DIV: %lf / %lf\n",n1,n2);
 
     Double res = 0.0;
     if(n2!=0.0)
@@ -103,7 +103,7 @@ Token Float_Float_Handler_Div(Scope* s,Token* op,Vector* args){
 Token Float_Float_Handler_Neg(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
 
-    printf("NEG: -%s\n",a->str);
+    //printf("NEG: -%s\n",a->str);
 
     Double n1 = Implementation_FloatOf(s,a);
     Double res = -n1;
