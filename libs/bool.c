@@ -3,7 +3,7 @@
 #include "/home/codeleaded/System/Static/Library/LuaLikeDefines.h"
 
 Boolean Implementation_BooleanOf(Scope* s,Token* a){
-    Boolean n = 0;
+    Boolean n = False;
     
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
@@ -12,10 +12,12 @@ Boolean Implementation_BooleanOf(Scope* s,Token* a){
         }else{
             s->Error(s,"[Boolean]: Impl -> 1. Arg: Variable %s doesn't exist!\n",a->str);
         }
+    }else if(a->tt == TOKEN_NUMBER){
+        n = (Boolean)a->v_i64;
+    }else if(a->tt == TOKEN_FLOAT){
+        n = (Boolean)a->v_f64;
     }else if(a->tt==TOKEN_BOOL){
         n = a->v_b1;
-    }else if(a->tt == TOKEN_NUMBER){
-        n = a->v_i64;
     }else{
         s->Error(s,"[Boolean]: Impl -> 1. Arg: %s is not a bool type!\n",a->str);
     }
@@ -28,24 +30,7 @@ Token Boolean_Boolean_Handler_Ass(Scope* s,Token* op,Vector* args){
 
     //printf("ASS: %s = %s\n",a->str,b->str);
 
-    Boolean n2;
-    
-    if(b->tt==TOKEN_STRING){
-        Variable* b_var = Scope_FindVariable(s,b->str);
-        if(b_var){
-            n2 = *(Boolean*)b_var->data;
-        }else{
-            s->Error(s,"[Boolean_Ass]: 2. Arg: Variable %s doesn't exist!\n",b->str);
-        }
-    }else if(a->tt==TOKEN_FLOAT){
-        n2 = (Boolean)a->v_f64;
-    }else if(a->tt==TOKEN_NUMBER){
-        n2 = (Boolean)a->v_i64;
-    }else if(b->tt==TOKEN_BOOL){
-        n2 = a->v_b1;
-    }else{
-        s->Error(s,"[Boolean_Ass]: 2. Arg: %s is not a bool type!\n",b->str);
-    }
+    Boolean n2 = Implementation_BooleanOf(s,b);
     
     if(a->tt==TOKEN_STRING){
         Variable* a_var = Scope_FindVariable(s,a->str);
@@ -105,8 +90,9 @@ Token Boolean_Handler_Not(Scope* s,Token* op,Vector* args){
 }
 Token Boolean_Handler_Cast(Scope* s,Token* op,Vector* args){
     Token* a = (Token*)Vector_Get(args,0);
-    Boolean n1 = Implementation_BooleanOf(s,a);
-    return Token_New_B1(TOKEN_BOOL,n1);
+    Boolean res = Implementation_BooleanOf(s,a);
+    char* resstr = Boolean_Get(res);
+    return Token_Move(TOKEN_CONSTSTRING_DOUBLE,resstr);
 }
 
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>

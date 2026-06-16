@@ -1,6 +1,7 @@
 from io import *
 from list import *
 from obj import *
+from math import *
 
 /*
 class Human
@@ -29,19 +30,16 @@ function main()
     l += "first"
     l += "second"
 
-    if l.contains("first")
-        io::print("Is contained!")
-    else
-        io::print("Is not contained!")
-    end
+    --l.len()
 
-    --l.append("third")
-    --l.append("fourth")
-    --l.append("third")
-    --l.append("fourth")
+    --if l.contains("first")
+    --    io::print("Is contained!\n")
+    --else
+    --    io::print("Is not contained!\n")
+    --end
 
-    --io::print(l.tostr())
-    --io::print(l.tostr())
+    io::print("Len is: " + math::getInt(l.len()) + "\n")
+    io::print("List: " + l.tostr() + "\n")
 
     return l
 end

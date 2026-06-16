@@ -5,7 +5,11 @@ from obj import *
 from math import *
 
 function overlap(r1_x,r1_y,r1_w,r1_h,r2_x,r2_y,r2_w,r2_h)
-    return r1_x >= r2_x - r1_w && r1_x < r2_x + r2_w && r1_y >= r2_y - r1_h && r1_y < r2_y + r2_h
+    l = (r1_x >= r2_x - r1_w)
+    r = (r1_x <  r2_x + r2_w)
+    u = (r1_y >= r2_y - r1_h)
+    d = (r1_y <  r2_y + r2_h)
+    return l && r && u && d
 end
 
 function main()
@@ -27,7 +31,7 @@ function main()
 
     ball_x = 0.5
     ball_y = 0.5
-    ballvelo_x = -0.2
+    ballvelo_x = 0.2
     ballvelo_y = 0.2
 
     while w.running()
@@ -79,7 +83,7 @@ function main()
         if ball_x > 1.0
             ball_x = 0.5
             ball_y = 0.5
-            ballvelo_x = 0.2
+            ballvelo_x = -0.2
             ballvelo_y = 0.2
             score1 = score1 + 1
         end
@@ -106,6 +110,10 @@ function main()
         sc1 = math::getInt(score1)
         sc2 = math::getInt(score2)
         w.string(sc1+" : "+sc2,0.5 * wwidth,0.01 * wheight,0xFFFFFFFF)
+        --w.string(math::getFloat(ballvelo_x * w.elapsed()),0.5 * wwidth,0.01 * wheight,0xFFFFFFFF)
+        --w.string(math::getFloat(ballvelo_y * w.elapsed()),0.5 * wwidth,0.09 * wheight,0xFFFFFFFF)
+        
+        --w.string(math::getFloat(wwidth)+","+math::getFloat(wheight),0.5 * wwidth,0.01 * wheight,0xFFFFFFFF)
 
         w.render()
         sys::msleep(5)

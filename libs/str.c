@@ -108,9 +108,33 @@ Token Str_Handler_Destroy(Scope* s,Token* op,Vector* args){
     return Token_Null();
 }
 
+Variable Str_Len(Scope* sc,CStr name,Variable* args){
+    Variable* a_var = &args[0];
+    
+    if(!Variable_Data(a_var)){
+        printf("[Str]: Len -> %s is not a var!\n",a_var->name);
+    }else{
+        CStr s_var = *(CStr*)Variable_Data(a_var);
+        
+        return Variable_Make(
+            "Len","int",(Number[]){ CStr_Size(s_var) },
+            sizeof(Number),sc->range - 1,
+            Scope_DestroyerOfType(sc,"int"),
+            Scope_CpyerOfType(sc,"int")
+        );
+    }
+
+    return Variable_Make(
+        "Len","int",(Number[]){ -1 },
+        sizeof(Number),sc->range - 1,
+        Scope_DestroyerOfType(sc,"int"),
+        Scope_CpyerOfType(sc,"int")
+    );
+}
+
 void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vector<CStr>
     TypeMap_PushContained(&s->types,funcs,
-        Type_New("str",8,OperatorInterationMap_Make((OperatorInterater[]){
+        Type_New("str",sizeof(CStr),OperatorInterationMap_Make((OperatorInterater[]){
             OperatorInterater_Make((CStr[]){ NULL },OperatorDefineMap_Make((OperatorDefiner[]){
                 OperatorDefiner_New(TOKEN_CAST,(Token(*)(void*,Token*,Vector*))Str_Handler_Cast),
                 OperatorDefiner_New(TOKEN_INIT,NULL),
@@ -126,4 +150,9 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
             OPERATORINTERATER_END
         }),Str_Destroyer,Str_Cpyer)
     );
+
+    ExternFunctionMap_PushContained(Extern_Functions,funcs,ExternFunction_New("len","int",(Member[]){ 
+        Member_New("str","s"),
+        MEMBER_END
+    },(void*)Str_Len));
 }

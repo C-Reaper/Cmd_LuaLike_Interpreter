@@ -262,7 +262,7 @@ Variable Window_Running(Scope* sc,CStr name,Variable* args){
 Variable Window_Width(Scope* sc,CStr name,Variable* args){
     Variable* a_var = &args[0];
     
-    Double b = 0;
+    Double b = 0.0;
     if(!Variable_Data(a_var)){
         printf("[Window]: Width -> %s is not init!\n",a_var->name);
     }else{
@@ -306,8 +306,6 @@ Variable Window_Height(Scope* sc,CStr name,Variable* args){
 
 Variable Window_Elapsed(Scope* sc,CStr name,Variable* args){
     Variable* a_var = &args[0];
-    Variable* key_var = &args[1];
-    Variable* action_var = &args[2];
     
     Double b = 0.0;
     if(!Variable_Data(a_var)){
@@ -319,7 +317,7 @@ Variable Window_Elapsed(Scope* sc,CStr name,Variable* args){
     }
 
     return Variable_Make(
-        ".KEYSTATE",
+        ".Elapsed",
         "float",
         (Double[]){ b },
         sizeof(Double),
