@@ -136,7 +136,7 @@ int main(int argc,char** argv){
     
     //LuaLike_Print(&ll);
 
-    LuaLike ll = LuaLike_New("./code/Pong.ll","./bin");
+    LuaLike ll = LuaLike_New("./code/Function.ll","./bin");
     
     Variable ret = LuaLike_Function(&ll,"main",(Variable[]){ 
         VARIABLE_END

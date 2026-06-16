@@ -19,6 +19,22 @@ Variable math_max(Scope* sc,CStr name,Variable* args){
     return ret;
 }
 
+Variable math_floor(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    Double out = floor(*(Double*)Variable_Data(a));
+    return Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
+}
+Variable math_ceil(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    Double out = ceil(*(Double*)Variable_Data(a));
+    return Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
+}
+Variable math_round(Scope* sc,CStr name,Variable* args){
+    Variable* a = &args[0];
+    Double out = round(*(Double*)Variable_Data(a));
+    return Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
+}
+
 Variable math_sin(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     Double out = sin(*(Double*)Variable_Data(a));
@@ -49,28 +65,28 @@ Variable math_pow(Scope* sc,CStr name,Variable* args){
 Variable math_parseInt(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     
-    Number out = Number_Parse(*(CStr*)a->data);
+    Number out = I64_Parse(*(CStr*)a->data);
     Variable ret = Variable_Make("OUT","int",(Number[]){ out },sizeof(Number),0,NULL,NULL);
     return ret;
 }
 Variable math_parseFloat(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     
-    Double out = Double_Parse(*(CStr*)a->data,1);
+    Double out = F64_Parse(*(CStr*)a->data);
     Variable ret = Variable_Make("OUT","float",(Double[]){ out },sizeof(Double),0,NULL,NULL);
     return ret;
 }
 Variable math_getInt(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     
-    CStr out = Number_Get(*(Number*)a->data);
+    CStr out = I64_Get_D(*(Number*)a->data);
     Variable ret = Variable_Make("OUT","str",(CStr[]){ out },sizeof(CStr),0,Scope_DestroyerOfType(sc,"str"),Scope_CpyerOfType(sc,"str"));
     return ret;
 }
 Variable math_getFloat(Scope* sc,CStr name,Variable* args){
     Variable* a = &args[0];
     
-    CStr out = Double_Get(*(Double*)a->data,8);
+    CStr out = F64_Get_Dc(*(Double*)a->data);
     Variable ret = Variable_Make("OUT","str",(CStr[]){ out },sizeof(CStr),0,Scope_DestroyerOfType(sc,"str"),Scope_CpyerOfType(sc,"str"));
     return ret;
 }
@@ -87,6 +103,18 @@ void Ex_Packer(ExternFunctionMap* Extern_Functions,Vector* funcs,Scope* s){//Vec
             Member_New("int","b"),
             MEMBER_END
         },(void*)math_max),
+        ExternFunction_New("floor","float",(Member[]){ 
+            Member_New("float","a"),
+            MEMBER_END
+        },(void*)math_floor),
+        ExternFunction_New("ceil","float",(Member[]){ 
+            Member_New("float","a"),
+            MEMBER_END
+        },(void*)math_ceil),
+        ExternFunction_New("round","float",(Member[]){ 
+            Member_New("float","a"),
+            MEMBER_END
+        },(void*)math_round),
         ExternFunction_New("sin","float",(Member[]){ 
             Member_New("float","a"),
             MEMBER_END
