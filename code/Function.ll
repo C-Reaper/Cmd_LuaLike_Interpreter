@@ -42,5 +42,8 @@ function main()
 
     --return gauss(gauss(3) + gauss(3)) + gauss(gauss(3) + gauss(3))
     --return math::parseInt(math::getInt(120))
-    return math::max(gauss(4),math::min(fib(7),fac(7)))
+
+    --return math::max(gauss(4),math::min(fib(7),fac(7)))
+
+    return math::max(math::parseInt("1"),math::parseInt("2"))
 end
